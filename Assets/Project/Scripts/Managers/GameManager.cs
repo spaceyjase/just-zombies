@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Project.Scripts.Zombie;
 using JetBrains.Annotations;
 using Unity.Entities;
@@ -66,11 +67,7 @@ namespace Assets.Project.Scripts.Managers
 
             var manager = World.DefaultGameObjectInjectionWorld.EntityManager;
             var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, null);
-            var entities = new List<Entity>();
-            foreach (var zombiePrefab in zombiePrefabs)
-            {
-                entities.Add(GameObjectConversionUtility.ConvertGameObjectHierarchy(zombiePrefab, settings));
-            }
+            var entities = zombiePrefabs.Select(zombiePrefab => GameObjectConversionUtility.ConvertGameObjectHierarchy(zombiePrefab, settings)).ToList();
             while (!gameOver)
             {
                 // Create
