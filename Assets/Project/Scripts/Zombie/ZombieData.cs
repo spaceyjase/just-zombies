@@ -5,8 +5,8 @@ namespace Assets.Project.Scripts.Zombie
     [GenerateAuthoringComponent]
     public struct ZombieData : IComponentData
     {
-        public int Speed;
-        public int RotationSpeed;
+        public float Speed;
+        //public int RotationSpeed;
         public int Health;
     }
 }
