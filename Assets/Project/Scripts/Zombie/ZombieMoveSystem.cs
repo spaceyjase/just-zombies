@@ -28,9 +28,7 @@ namespace Assets.Project.Scripts.Zombie
                     if (distance > 0.5f)
                     {
                         position.Value = math.lerp(position.Value, playerPosition, math.mul(deltaTime, data.Speed));
-                        //position.Value = math.@select(playerPosition,
-                        //    math.lerp(position.Value, playerPosition,
-                        //    math.mul(deltaTime, data.Speed), distance <= 1f);
+                        rotation.Value = quaternion.identity;
                     }
                 }).Schedule(inputDeps);
 
