@@ -28,8 +28,8 @@ namespace Assets.Project.Scripts.Player
             {
                 physics.Linear += DeltaTime * data.Speed * new float3(InputX, InputY, 0f);
 
-                if (ResetX) physics.Linear.x = 0f;
-                if (ResetY) physics.Linear.y = 0f;
+                //if (ResetX) physics.Linear.x = 0f;
+                //if (ResetY) physics.Linear.y = 0f;
 
                 rotation.Value = quaternion.identity;
 

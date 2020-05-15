@@ -254,7 +254,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7.5
+  orthographic size: 45
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -488,6 +488,7 @@ MonoBehaviour:
   maxLevels: 6
   playerPrefab: {fileID: 1534994850309385710, guid: f14d0bc29d9b0c44a89e309a2078c931,
     type: 3}
+  playerSpeed: 50
   zombiePrefabs:
   - {fileID: 3538573571263376222, guid: 41c3315e45e023944a132bc44e398c92, type: 3}
   - {fileID: 3538573571263376222, guid: 41c3315e45e023944a132bc44e398c92, type: 3}

@@ -25,6 +25,8 @@ namespace Assets.Project.Scripts.Managers
         [SerializeField]
         private GameObject playerPrefab = null;
         [SerializeField]
+        private float playerSpeed = 10f;
+        [SerializeField]
         private GameObject[] zombiePrefabs = null;
         [SerializeField]
         private float minZombieSpeed = 1f;
@@ -72,7 +74,7 @@ namespace Assets.Project.Scripts.Managers
             var player = manager.Instantiate(prefab);
 
             manager.SetComponentData(player, new Translation { Value = new float3(0f, 0f, 0f) });
-            manager.SetComponentData(player, new PlayerData { Speed = 7.5f });
+            manager.SetComponentData(player, new PlayerData { Speed = playerSpeed });
 
         }
 
