@@ -1,4 +1,5 @@
-﻿using Assets.Project.Scripts.Managers;
+﻿using Assets.Project.Scripts.Data;
+using Assets.Project.Scripts.Managers;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
@@ -15,8 +16,8 @@ namespace Assets.Project.Scripts.Zombie
             var deltaTime = Time.DeltaTime;
 
             float3 playerPosition;
-            playerPosition.x = GameManager.PlayerPosition.x;
-            playerPosition.y = GameManager.PlayerPosition.y;
+            playerPosition.x = GameData.PlayerPosition.x;
+            playerPosition.y = GameData.PlayerPosition.y;
             playerPosition.z = 0f;
 
             var jobHandle = Entities
@@ -25,12 +26,14 @@ namespace Assets.Project.Scripts.Zombie
                 {
                     var target = playerPosition - position.Value;
                     var distance = math.length(target);
-                    if (distance > 0.5f)
-                    {
-                        position.Value = math.lerp(position.Value, playerPosition, math.mul(deltaTime, data.Speed));
-                        rotation.Value = quaternion.identity;
-                    }
+
+                    if (!(distance > 0.5f)) return; // too close
+
+                    position.Value = math.lerp(position.Value, playerPosition, math.mul(deltaTime, data.Speed));
+                    rotation.Value = quaternion.identity;
                 }).Schedule(inputDeps);
+
+            jobHandle.Complete();
 
             return jobHandle;
         }
