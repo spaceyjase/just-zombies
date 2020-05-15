@@ -24,7 +24,7 @@ namespace Assets.Project.Scripts.Player
             public void DoWork(ref Translation translation,
                 ref PhysicsVelocity physics,
                 ref Rotation rotation,
-                ref PlayerData data)
+                in PlayerData data)
             {
                 physics.Linear += DeltaTime * data.Speed * new float3(InputX, InputY, 0f);
 
@@ -37,6 +37,7 @@ namespace Assets.Project.Scripts.Player
                 Y = translation.Value.y;
             }
         }
+
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
             var inputY = Input.GetAxis("Vertical");
@@ -53,8 +54,8 @@ namespace Assets.Project.Scripts.Player
 
             Entities
                 .WithName(nameof(PlayerControllerSystem))
-                .ForEach((ref Translation translation, ref PhysicsVelocity physics, ref Rotation rotation, ref PlayerData data) 
-                    => worker.DoWork(ref translation, ref physics, ref rotation, ref data))
+                .ForEach((ref Translation translation, ref PhysicsVelocity physics, ref Rotation rotation, in PlayerData data) 
+                    => worker.DoWork(ref translation, ref physics, ref rotation, in data))
                 .Run();
 
             GameData.PlayerPosition.x = worker.X;

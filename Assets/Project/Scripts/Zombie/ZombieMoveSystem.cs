@@ -22,14 +22,14 @@ namespace Assets.Project.Scripts.Zombie
 
             var jobHandle = Entities
                 .WithName(nameof(ZombieMoveSystem))
-                .ForEach((ref Translation position, ref Rotation rotation, ref ZombieData data) =>
+                .ForEach((ref Translation position, ref Rotation rotation, in ZombieData data) =>
                 {
                     var target = playerPosition - position.Value;
                     var distance = math.length(target);
 
                     if (!(distance > 0.5f)) return; // too close
 
-                    position.Value = math.lerp(position.Value, playerPosition, math.mul(deltaTime, data.Speed));
+                    position.Value += data.Speed * target * deltaTime;
                     rotation.Value = quaternion.identity;
                 }).Schedule(inputDeps);
 
