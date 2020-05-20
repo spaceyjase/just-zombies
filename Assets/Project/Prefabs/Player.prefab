@@ -183,7 +183,7 @@ MonoBehaviour:
     z: 0.4
   m_CustomTags:
     Tag00: 0
-    Tag01: 0
+    Tag01: 1
     Tag02: 0
     Tag03: 0
     Tag04: 0
@@ -233,6 +233,7 @@ MonoBehaviour:
     m_BevelRadius: 0
     m_MinimumAngle: 2.5000002
   m_CustomMesh: {fileID: 0}
+  m_ForceUnique: 0
   m_Material:
     m_SupportsTemplate: 1
     m_Template: {fileID: 0}

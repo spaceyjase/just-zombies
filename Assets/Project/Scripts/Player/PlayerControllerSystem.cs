@@ -14,8 +14,6 @@ namespace Assets.Project.Scripts.Player
         {
             public float InputX;
             public float InputY;
-            public bool ResetX;
-            public bool ResetY;
             public float DeltaTime;
 
             public float X;
@@ -27,9 +25,7 @@ namespace Assets.Project.Scripts.Player
                 in PlayerData data)
             {
                 physics.Linear += DeltaTime * data.Speed * new float3(InputX, InputY, 0f);
-
-                //if (ResetX) physics.Linear.x = 0f;
-                //if (ResetY) physics.Linear.y = 0f;
+                physics.Angular = new float3(0f, 0f, 0f);
 
                 rotation.Value = quaternion.identity;
 
@@ -47,8 +43,6 @@ namespace Assets.Project.Scripts.Player
             {
                 InputX = inputX,
                 InputY = inputY,
-                ResetX = Mathf.Approximately(inputX, 0f),
-                ResetY = Mathf.Approximately(inputY, 0f),
                 DeltaTime = Time.DeltaTime
             };
 

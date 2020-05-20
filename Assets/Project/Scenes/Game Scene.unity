@@ -495,6 +495,7 @@ MonoBehaviour:
   - {fileID: 3538573571263376222, guid: 41c3315e45e023944a132bc44e398c92, type: 3}
   - {fileID: 8678198775949135577, guid: 700bc3fc8b15afc46ab3daf135d1ed39, type: 3}
   - {fileID: 8678198775949135577, guid: 700bc3fc8b15afc46ab3daf135d1ed39, type: 3}
+  - {fileID: 8678198775949135577, guid: 34f1b7975e8af6b4f9acc170c3d6b9a8, type: 3}
   minZombieSpeed: 0.2
   maxZombieSpeed: 0.7
 --- !u!1 &1617381430
