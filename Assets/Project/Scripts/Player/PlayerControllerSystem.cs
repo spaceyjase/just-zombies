@@ -25,7 +25,7 @@ namespace Assets.Project.Scripts.Player
                 in PlayerData data)
             {
                 physics.Linear += DeltaTime * data.Speed * new float3(InputX, InputY, 0f);
-                physics.Angular = new float3(0f, 0f, 0f);
+                physics.Angular = float3.zero;
 
                 rotation.Value = quaternion.identity;
 
