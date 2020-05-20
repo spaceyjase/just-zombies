@@ -38,6 +38,8 @@ namespace Assets.Project.Scripts.Managers
         private EntityManager manager;
         private GameObjectConversionSettings settings;
 
+        private BlobAssetStore store;
+
         #region Properties
         public static bool IsGameOver => instance == null || instance.gameOver;
         #endregion
@@ -57,9 +59,15 @@ namespace Assets.Project.Scripts.Managers
 
         private void Start()
         {
+            store = new BlobAssetStore();
             manager = World.DefaultGameObjectInjectionWorld.EntityManager;
-            settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, null);
+            settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, store);
             Initialise();
+        }
+
+        private void OnDestroy()
+        {
+            store.Dispose();
         }
 
         private void Initialise()
@@ -75,7 +83,6 @@ namespace Assets.Project.Scripts.Managers
 
             manager.SetComponentData(player, new Translation { Value = new float3(0f, 0f, 0f) });
             manager.SetComponentData(player, new PlayerData { Speed = playerSpeed });
-
         }
 
         private IEnumerator SpawnZombies()
@@ -100,9 +107,13 @@ namespace Assets.Project.Scripts.Managers
                 // Create
                 var zombie = manager.Instantiate(entities[Random.Range(0, entities.Count)]);
 
-                // TODO: Set spawn location (defined in editor)
-                float x = UnityEngine.Random.Range(-300, 300);
-                float y = UnityEngine.Random.Range(-300, 300);
+                // TODO: Set spawn location (defined in editor?)
+                float height = UnityEngine.Camera.main.orthographicSize + 1;
+                float width = UnityEngine.Camera.main.orthographicSize * UnityEngine.Camera.main.aspect;
+                float x = UnityEngine.Random.Range(width, width + 300);
+                float y = UnityEngine.Random.Range(height, height + 300);
+                x *= Random.value > 0.5f ? 1 : -1;
+                y *= Random.value > 0.5f ? 1 : -1;
                 var position = transform.TransformPoint(new float3(x, y, 0f));
                 manager.SetComponentData(zombie, new Translation { Value = position });
 
@@ -116,6 +127,5 @@ namespace Assets.Project.Scripts.Managers
                 yield return new WaitForSeconds(currentRate);
             }
         }
-
     }
 }
