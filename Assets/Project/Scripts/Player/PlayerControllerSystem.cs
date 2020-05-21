@@ -1,4 +1,5 @@
 ﻿using Assets.Project.Scripts.Data;
+using JetBrains.Annotations;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -8,9 +9,10 @@ using UnityEngine;
 
 namespace Assets.Project.Scripts.Player
 {
+    [UsedImplicitly]
     public class PlayerControllerSystem : JobComponentSystem
     {
-        struct Worker
+        private struct Worker
         {
             public float InputX;
             public float InputY;
