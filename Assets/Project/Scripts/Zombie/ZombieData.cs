@@ -6,7 +6,5 @@ namespace Assets.Project.Scripts.Zombie
     public struct ZombieData : IComponentData
     {
         public float Speed;
-        //public int RotationSpeed;
-        public int Health;
     }
 }

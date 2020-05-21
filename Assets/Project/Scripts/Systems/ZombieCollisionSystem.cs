@@ -28,15 +28,17 @@ namespace Assets.Project.Scripts.Systems
                 var isTargetA = HealthData.Exists(entityA);
                 var isTargetB = HealthData.Exists(entityB);
 
-                var isBulletA = ZombieData.Exists(entityA);
-                var isBulletB = ZombieData.Exists(entityB);
+                var isZombieA = ZombieData.Exists(entityA);
+                var isZombieB = ZombieData.Exists(entityB);
 
-                if (isBulletA && isTargetB)
+                if (isZombieA && isZombieB) return; // Zombies don't kill each other
+
+                if (isZombieA && isTargetB)
                 {
                     DoHit(entityB, ref HealthData);
                 }
 
-                if (isBulletB && isTargetA)
+                if (isZombieB && isTargetA)
                 {
                     DoHit(entityA, ref HealthData);
                 }

@@ -48,6 +48,14 @@ namespace Assets.Project.Scripts.Managers
         public static bool IsGameOver => instance == null || instance.gameOver;
         #endregion
 
+        public static void GameOver()
+        {
+            if (instance == null) return;
+
+            instance.gameOver = true;
+            Debug.Log("GAME OVER");
+        }
+
         [UsedImplicitly]
         private void Awake()
         {
@@ -148,8 +156,7 @@ namespace Assets.Project.Scripts.Managers
                 // Data
                 manager.SetComponentData(zombie, new ZombieData
                 {
-                    Speed = Random.Range(minZombieSpeed, maxZombieSpeed),
-                    Health = 1
+                    Speed = Random.Range(minZombieSpeed, maxZombieSpeed)
                 });
 
                 yield return new WaitForSeconds(currentRate);
