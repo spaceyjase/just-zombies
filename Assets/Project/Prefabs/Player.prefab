@@ -182,8 +182,8 @@ MonoBehaviour:
     y: 0.4
     z: 0.4
   m_CustomTags:
-    Tag00: 0
-    Tag01: 1
+    Tag00: 1
+    Tag01: 0
     Tag02: 0
     Tag03: 0
     Tag04: 0
@@ -252,10 +252,10 @@ MonoBehaviour:
         CombineMode: 2
     m_BelongsTo:
       m_Override: 0
-      m_Value: 0101010101010101010101010101010101010101010101010101010101010101
+      m_Value: 0100000000000000000000000000000000000000000000000000000000000000
     m_CollidesWith:
       m_Override: 0
-      m_Value: 0101010101010101010101010101010101010101010101010101010101010101
+      m_Value: 0000010100000000000000000000000000000000000000000000000000000000
     m_RaisesCollisionEvents:
       m_Override: 0
       m_Value: 0

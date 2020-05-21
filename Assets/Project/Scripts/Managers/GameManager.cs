@@ -1,13 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using Assets.Project.Scripts.Data;
 using Assets.Project.Scripts.Player;
 using Assets.Project.Scripts.Zombie;
 using JetBrains.Annotations;
 using Unity.Entities;
 using Unity.Mathematics;
-using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -16,6 +13,13 @@ namespace Assets.Project.Scripts.Managers
 {
     public class GameManager : MonoBehaviour
     {
+        [Header("Level geometry")]
+        [SerializeField]
+        private GameObject horizontalPrefab = null;
+        [SerializeField]
+        private GameObject verticalPrefab = null;
+
+        [Header("Game settings")]
         [SerializeField]
         private int maxZombies = 1000;
         [SerializeField]
@@ -57,6 +61,7 @@ namespace Assets.Project.Scripts.Managers
             }
         }
 
+        [UsedImplicitly]
         private void Start()
         {
             store = new BlobAssetStore();
@@ -65,6 +70,7 @@ namespace Assets.Project.Scripts.Managers
             Initialise();
         }
 
+        [UsedImplicitly]
         private void OnDestroy()
         {
             store.Dispose();
@@ -72,8 +78,30 @@ namespace Assets.Project.Scripts.Managers
 
         private void Initialise()
         {
+            SpawnLevelGeometry();
             SpawnPlayer();
             StartCoroutine(nameof(SpawnZombies));
+        }
+
+        private void SpawnLevelGeometry()
+        {
+            var height = UnityEngine.Camera.main.orthographicSize;
+            var width = UnityEngine.Camera.main.orthographicSize * UnityEngine.Camera.main.aspect;
+
+            // Position walls just outside of camera boundary
+            var offset = verticalPrefab.transform.localScale.x / 2f;
+            var prefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(verticalPrefab, settings);
+            var leftWall = manager.Instantiate(prefab);
+            manager.SetComponentData(leftWall, new Translation { Value = new float3(-width - offset, 0f, 0f) });
+            var rightWall = manager.Instantiate(prefab);
+            manager.SetComponentData(rightWall, new Translation { Value = new float3(width + offset, 0f, 0f) });
+
+            offset = horizontalPrefab.transform.localScale.y / 2f;
+            prefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(horizontalPrefab, settings);
+            var topWall = manager.Instantiate(prefab);
+            manager.SetComponentData(topWall, new Translation { Value = new float3(0f, height + offset, 0f) });
+            var bottomWall = manager.Instantiate(prefab);
+            manager.SetComponentData(bottomWall, new Translation { Value = new float3(0f, -height - offset, 0f) });
         }
 
         private void SpawnPlayer()
@@ -110,8 +138,8 @@ namespace Assets.Project.Scripts.Managers
                 // TODO: Set spawn location (defined in editor?)
                 float height = UnityEngine.Camera.main.orthographicSize + 1;
                 float width = UnityEngine.Camera.main.orthographicSize * UnityEngine.Camera.main.aspect;
-                float x = UnityEngine.Random.Range(width, width + 300);
-                float y = UnityEngine.Random.Range(height, height + 300);
+                float x = Random.Range(width, width + 300);
+                float y = Random.Range(height, height + 300);
                 x *= Random.value > 0.5f ? 1 : -1;
                 y *= Random.value > 0.5f ? 1 : -1;
                 var position = transform.TransformPoint(new float3(x, y, 0f));
