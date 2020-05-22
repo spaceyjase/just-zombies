@@ -31,7 +31,7 @@ namespace Assets.Project.Scripts.Managers
         [SerializeField]
         private float playerSpeed = 10f;
         [SerializeField]
-        private double fireRate = 0.1;
+        private float fireRate = 0.1f;
 
         [Header("Bullet settings")]
         [SerializeField]
@@ -62,7 +62,7 @@ namespace Assets.Project.Scripts.Managers
 
         #region Properties
         public static bool IsGameOver => instance == null || instance.gameOver;
-        public static double FireRate => instance == null ? 0.0 : instance.fireRate;
+        public static float FireRate => instance == null ? 0.1f : instance.fireRate;
         public static float BulletLifetimeInSeconds => instance == null ? 0f : instance.bulletLifetimeInSeconds;
         public static float BulletSpeed => instance == null ? 0f : instance.bulletSpeed;
         #endregion

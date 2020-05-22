@@ -14,7 +14,7 @@ namespace Assets.Project.Scripts.Player
     [UsedImplicitly]
     public class PlayerControllerSystem : JobComponentSystem
     {
-        private double nextFireTime = GameManager.FireRate;
+        private float nextFireTime;
 
         private struct Worker
         {
@@ -80,7 +80,9 @@ namespace Assets.Project.Scripts.Player
             }
 
             if (resetX && resetY) return (inputDeps);
-            if (!(Time.ElapsedTime > nextFireTime)) return inputDeps;
+
+            nextFireTime += Time.DeltaTime;
+            if (!(nextFireTime > GameManager.FireRate)) return inputDeps;
 
             var direction = new float3(inputY, inputX, 0f);
 
@@ -101,7 +103,7 @@ namespace Assets.Project.Scripts.Player
                     EntityManager.SetComponentData(instance, new BulletData { Speed = GameManager.BulletSpeed, });
                 }).Run();
 
-            nextFireTime = Time.ElapsedTime + GameManager.FireRate;
+            nextFireTime = 0f;
 
             return inputDeps;
         }
