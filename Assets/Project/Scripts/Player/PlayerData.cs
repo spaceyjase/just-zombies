@@ -7,5 +7,6 @@ namespace Assets.Project.Scripts.Player
     public struct PlayerData : IComponentData
     {
         public float Speed;
+        public Entity Bullet;
     }
 }

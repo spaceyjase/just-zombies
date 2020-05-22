@@ -21,15 +21,31 @@ namespace Assets.Project.Scripts.Managers
 
         [Header("Game settings")]
         [SerializeField]
-        private int maxZombies = 1000;
-        [SerializeField]
         private int gameLengthInSeconds = 60;
         [SerializeField]
         private int maxLevels = 10;
+
+        [Header("Player settings")]
         [SerializeField]
         private GameObject playerPrefab = null;
         [SerializeField]
         private float playerSpeed = 10f;
+        [SerializeField]
+        private double fireRate = 0.1;
+
+        [Header("Bullet settings")]
+        [SerializeField]
+        private GameObject bulletPrefab = null;
+        [SerializeField]
+        private float bulletSpeed = 100f;
+        [SerializeField]
+        private float bulletLifetimeInSeconds = 2f;
+
+        [Header("Zombie settings")]
+        [SerializeField]
+        private bool enableZombies;
+        [SerializeField]
+        private int maxZombies = 1000;
         [SerializeField]
         private GameObject[] zombiePrefabs = null;
         [SerializeField]
@@ -46,6 +62,9 @@ namespace Assets.Project.Scripts.Managers
 
         #region Properties
         public static bool IsGameOver => instance == null || instance.gameOver;
+        public static double FireRate => instance == null ? 0.0 : instance.fireRate;
+        public static float BulletLifetimeInSeconds => instance == null ? 0f : instance.bulletLifetimeInSeconds;
+        public static float BulletSpeed => instance == null ? 0f : instance.bulletSpeed;
         #endregion
 
         public static void GameOver()
@@ -88,7 +107,10 @@ namespace Assets.Project.Scripts.Managers
         {
             SpawnLevelGeometry();
             SpawnPlayer();
-            StartCoroutine(nameof(SpawnZombies));
+            if (enableZombies)
+            {
+                StartCoroutine(nameof(SpawnZombies));
+            }
         }
 
         private void SpawnLevelGeometry()
@@ -117,8 +139,14 @@ namespace Assets.Project.Scripts.Managers
             var prefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(playerPrefab, settings);
             var player = manager.Instantiate(prefab);
 
+            prefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(bulletPrefab, settings);
+
             manager.SetComponentData(player, new Translation { Value = new float3(0f, 0f, 0f) });
-            manager.SetComponentData(player, new PlayerData { Speed = playerSpeed });
+            manager.SetComponentData(player, new PlayerData
+            {
+                Speed = playerSpeed,
+                Bullet = prefab
+            });
         }
 
         private IEnumerator SpawnZombies()
