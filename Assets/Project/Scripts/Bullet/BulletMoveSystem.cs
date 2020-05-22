@@ -4,6 +4,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
+using UnityEditor.IMGUI.Controls;
 
 namespace Assets.Project.Scripts.Bullet
 {
@@ -18,8 +19,7 @@ namespace Assets.Project.Scripts.Bullet
                 .WithName(nameof(BulletMoveSystem))
                 .ForEach((ref PhysicsVelocity velocity, ref Rotation rotation, ref BulletData data) =>
                 {
-                    velocity.Angular = float3.zero;
-                    velocity.Linear += data.Speed * deltaTime * new float3(1f, 0f, 0f);
+                    velocity.Linear += data.Speed * deltaTime * math.mul(rotation.Value, new float3(1f, 0f, 0f));
                 }).Schedule(inputDeps);
 
             jobHandle.Complete();

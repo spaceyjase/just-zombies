@@ -27,7 +27,7 @@ namespace Assets.Project.Scripts.Zombie
                     var target = playerPosition - position.Value;
                     var distance = math.length(target);
 
-                    if (!(distance > 0.5f)) return; // too close
+                    if (!(distance > 0.2f)) return; // too close
 
                     position.Value += data.Speed * target * deltaTime;
                     rotation.Value = quaternion.identity;

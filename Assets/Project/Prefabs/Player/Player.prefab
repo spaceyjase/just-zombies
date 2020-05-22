@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 7.5
+  Bullet: {fileID: 0}
 --- !u!114 &2121499444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,7 +212,7 @@ MonoBehaviour:
   m_PrimitiveSize:
     x: 1
     y: 1
-    z: 6
+    z: 60
   m_PrimitiveOrientation:
     Value:
       x: -0
@@ -219,15 +220,15 @@ MonoBehaviour:
       z: 0
     RotationOrder: 4
   m_Capsule:
-    Height: 6
+    Height: 60
     Radius: 0.5
     Axis: 2
   m_Cylinder:
-    Height: 6
+    Height: 60
     Radius: 0.5
     Axis: 2
   m_CylinderSideCount: 20
-  m_SphereRadius: 3
+  m_SphereRadius: 30
   m_MinimumSkinnedVertexWeight: 0.1
   m_ConvexHullGenerationParameters:
     m_SimplificationTolerance: 0.01

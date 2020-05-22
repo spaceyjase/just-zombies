@@ -59,13 +59,30 @@ namespace Assets.Project.Scripts.Player
                     => worker.DoWork(ref translation, ref physics, ref rotation, in data))
                 .Run();
 
-            GameData.PlayerPosition.x = worker.X;
+            GameData.PlayerPosition.x = worker.X;   // TODO: revisit this
             GameData.PlayerPosition.y = worker.Y;
 
-            var fire = Input.GetButton("Fire1") && Time.ElapsedTime > nextFireTime;        // TODO: right-stick axis
-            if (!fire) return inputDeps;
+            // TODO: refactoring...
+            bool resetY = false;
+            inputY = Input.GetAxis("Vertical_2");
+            if (Mathf.Approximately(inputY, 0f))
+            {
+                resetY = true;
+                inputY = 0f;
+            }
 
-            var direction = new float3(inputX, inputY, 0f);     // TODO: axis
+            bool resetX = false;
+            inputX = Input.GetAxis("Horizontal_2");
+            if (Mathf.Approximately(inputX, 0f))
+            {
+                resetX = true;
+                inputX = 0f;
+            }
+
+            if (resetX && resetY) return (inputDeps);
+            if (!(Time.ElapsedTime > nextFireTime)) return inputDeps;
+
+            var direction = new float3(inputY, inputX, 0f);
 
             Entities.WithoutBurst().WithStructuralChanges()
                 .ForEach((ref Translation position, ref Rotation rotation, ref PlayerData data) =>
@@ -73,20 +90,15 @@ namespace Assets.Project.Scripts.Player
                     var instance = EntityManager.Instantiate(data.Bullet);
                     EntityManager.SetComponentData(instance, new Translation
                     {
-                        Value = new float3(worker.X, worker.Y, 0f)
+                        Value = new float3(position.Value.x, position.Value.y, position.Value.z + 0.25f)
                     });
-                    //EntityManager.SetComponentData(instance, new Rotation
-                    //{
-                    //    //Value = math.mul(math.normalize(rotation.Value),
-                    //    //    quaternion.AxisAngle(math.up(), deltaTime * direction.z))
-                    //    Value = quaternion.LookRotation(math.normalize(direction), new float3(0f, 0f, 1f))
-                    //});
+                    EntityManager.SetComponentData(instance, new Rotation
+                    {
+                        Value = quaternion.LookRotation(math.normalize(direction), new float3(0f, 0f, 1f))
+                    });
 
                     EntityManager.SetComponentData(instance, new LifetimeData { Lifetime = GameManager.BulletLifetimeInSeconds });
-                    EntityManager.SetComponentData(instance, new BulletData
-                    {
-                        Speed = GameManager.BulletSpeed,
-                    });
+                    EntityManager.SetComponentData(instance, new BulletData { Speed = GameManager.BulletSpeed, });
                 }).Run();
 
             nextFireTime = Time.ElapsedTime + GameManager.FireRate;
