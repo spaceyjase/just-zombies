@@ -9,22 +9,18 @@ using UnityEditor.IMGUI.Controls;
 namespace Assets.Project.Scripts.Bullet
 {
     [UsedImplicitly]
-    public class BulletMoveSystem : JobComponentSystem  // TODO: generic move along given direction system
+    public class BulletMoveSystem : SystemBase  // TODO: generic move along given direction system
     {
-        protected override JobHandle OnUpdate(JobHandle inputDeps)
+        protected override void OnUpdate()
         {
             var deltaTime = Time.DeltaTime;
 
-            var jobHandle = Entities
-                .WithName(nameof(BulletMoveSystem))
-                .ForEach((ref PhysicsVelocity velocity, ref Rotation rotation, ref BulletData data) =>
-                {
-                    velocity.Linear += data.Speed * deltaTime * math.mul(rotation.Value, new float3(1f, 0f, 0f));
-                }).Schedule(inputDeps);
-
-            jobHandle.Complete();
-
-            return inputDeps;
+            Entities
+              .WithAll<Bullet>()
+              .ForEach((ref PhysicsVelocity velocity, ref Rotation rotation, in BulletData data) =>
+              {
+                  velocity.Linear = data.Speed * deltaTime * math.mul(rotation.Value, new float3(1f, 0f, 0f));
+              }).Schedule();
         }
     }
 }

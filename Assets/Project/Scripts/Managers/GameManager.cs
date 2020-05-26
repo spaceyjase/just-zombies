@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using Assets.Project.Scripts.Player;
+using Assets.Project.Scripts.Utility;
 using Assets.Project.Scripts.Zombie;
 using JetBrains.Annotations;
 using Unity.Entities;
@@ -28,6 +29,8 @@ namespace Assets.Project.Scripts.Managers
     [Header("Player settings")]
     [SerializeField]
     private GameObject playerPrefab = null;
+    [SerializeField]
+    private EntityTracker playerTracker = null;
     [SerializeField]
     private float playerSpeed = 10f;
     [SerializeField]
@@ -63,6 +66,7 @@ namespace Assets.Project.Scripts.Managers
     public static float FireRate => instance == null ? 0.1f : instance.fireRate;
     public static float BulletLifetimeInSeconds => instance == null ? 0f : instance.bulletLifetimeInSeconds;
     public static float BulletSpeed => instance == null ? 0f : instance.bulletSpeed;
+    public static Vector3 PlayerPosition => instance == null ? Vector3.zero : instance.playerTracker.gameObject.transform.position;
     #endregion
 
     public static void GameOver()
@@ -134,7 +138,9 @@ namespace Assets.Project.Scripts.Managers
       var prefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(playerPrefab, settings);
       var player = manager.Instantiate(prefab);
 
-      prefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(bulletPrefab, settings);
+        playerTracker.SetReceivedEntity(player);
+
+        prefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(bulletPrefab, settings);
 
       manager.SetComponentData(player, new Translation { Value = new float3(0f, 0f, 0f) });
       manager.SetComponentData(player, new PlayerData
