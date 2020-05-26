@@ -8,6 +8,8 @@ using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
+using UnityEngine.XR.WSA.Input;
+using Math = System.Math;
 
 namespace Assets.Project.Scripts.Player
 {
@@ -63,28 +65,25 @@ namespace Assets.Project.Scripts.Player
             GameData.PlayerPosition.y = worker.Y;
 
             // TODO: refactoring...
-            bool resetY = false;
-            inputY = Input.GetAxis("Vertical_2");
+            inputX = 0f;
+            inputY = Input.GetAxisRaw("Vertical_2");
             if (Mathf.Approximately(inputY, 0f))
             {
-                resetY = true;
                 inputY = 0f;
+                inputX = Input.GetAxisRaw("Horizontal_2");
+                if (Mathf.Approximately(inputX, 0f)) return inputDeps;
             }
 
-            bool resetX = false;
-            inputX = Input.GetAxis("Horizontal_2");
-            if (Mathf.Approximately(inputX, 0f))
-            {
-                resetX = true;
-                inputX = 0f;
-            }
+            // Got this far so user is pressing a fire button
 
-            if (resetX && resetY) return (inputDeps);
+            var targetAngle = 0f;
+            if (inputY > 0f) targetAngle = 90f * Mathf.Deg2Rad;          // up
+            else if (inputY < 0f) targetAngle = 270f * Mathf.Deg2Rad;    // down
+            else if (inputX > 0f) targetAngle = 0f * Mathf.Deg2Rad;      // left
+            else if (inputX < 0f) targetAngle = 180f * Mathf.Deg2Rad;    // rigth
 
             nextFireTime += Time.DeltaTime;
             if (!(nextFireTime > GameManager.FireRate)) return inputDeps;
-
-            var direction = new float3(inputY, inputX, 0f);
 
             Entities.WithoutBurst().WithStructuralChanges()
                 .ForEach((ref Translation position, ref Rotation rotation, ref PlayerData data) =>
@@ -96,7 +95,7 @@ namespace Assets.Project.Scripts.Player
                     });
                     EntityManager.SetComponentData(instance, new Rotation
                     {
-                        Value = quaternion.LookRotation(math.normalize(direction), new float3(0f, 0f, 1f))
+                        Value = quaternion.Euler(0f, 0f, targetAngle)
                     });
 
                     EntityManager.SetComponentData(instance, new LifetimeData { Lifetime = GameManager.BulletLifetimeInSeconds });
