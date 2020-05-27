@@ -8,25 +8,25 @@ using Unity.Jobs;
 namespace Assets.Project.Scripts.Systems
 {
   [UsedImplicitly]
-  public class TimedDestroySystem : JobComponentSystem
+  public class TimedDestroySystem : SystemBase
   {
-    protected override JobHandle OnUpdate(JobHandle inputDeps)
+    protected override void OnUpdate()
     {
       var dt = Time.DeltaTime;
-      Entities.WithoutBurst().WithStructuralChanges()
-          .ForEach((Entity entity, ref LifetimeData lifetimeData) =>
+
+      Entities
+        .WithStructuralChanges()
+        .ForEach((Entity entity, int entityInQueryIndex, ref LifetimeData lifetimeData) =>
+        {
+          lifetimeData.Value -= dt;
+          if (lifetimeData.Value > 0) return;
+
+          if (EntityManager.HasComponent<PlayerData>(entity))
           {
-            lifetimeData.Value -= dt;
-            if (!(lifetimeData.Value <= 0f)) return;
-
-            if (EntityManager.HasComponent<PlayerData>(entity))
-            {
-              GameManager.GameOver();
-            }
-            EntityManager.DestroyEntity(entity);
-          }).Run();
-
-      return inputDeps;
+            GameManager.GameOver();
+          }
+          EntityManager.DestroyEntity(entity);
+        }).Run();
     }
   }
 }

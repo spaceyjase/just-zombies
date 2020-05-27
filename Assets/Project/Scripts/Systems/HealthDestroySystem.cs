@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Project.Scripts.Bullet;
 using Assets.Project.Scripts.Components;
 using Assets.Project.Scripts.Data;
 using Assets.Project.Scripts.Managers;
@@ -23,10 +24,8 @@ namespace Assets.Project.Scripts.Systems
         {
           for (var i = 0; i < collisionBuffer.Length; ++i)
           {
-            if (HasComponent<DamageData>(collisionBuffer[i].Entity))
-            {
-              health.Value -= GetComponent<DamageData>(collisionBuffer[i].Entity).Value;
-            }
+            if (!HasComponent<DamageData>(collisionBuffer[i].Entity)) continue;
+            health.Value -= GetComponent<DamageData>(collisionBuffer[i].Entity).Value;
           }
         }).Schedule();
 

@@ -247,7 +247,7 @@ MonoBehaviour:
       m_Value: 0101010000000000000000000000000000000000000000000000000000000000
     m_RaisesCollisionEvents:
       m_Override: 0
-      m_Value: 1
+      m_Value: 0
     m_CustomTags:
       m_Override: 0
       m_Value: 0000000000000000

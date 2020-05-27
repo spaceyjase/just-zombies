@@ -7,5 +7,6 @@ namespace Assets.Project.Scripts.Bullet
     public struct BulletData : IComponentData
     {
         public float Speed;
+        public float Lifetime;
     }
 }
