@@ -1,4 +1,6 @@
 ﻿using System;
+using Assets.Project.Scripts.Components;
+using Assets.Project.Scripts.Data;
 using Assets.Project.Scripts.Managers;
 using Assets.Project.Scripts.Player;
 using Assets.Project.Scripts.Zombie;
@@ -10,38 +12,39 @@ using UnityEngine;
 
 namespace Assets.Project.Scripts.Systems
 {
-    [UsedImplicitly]
-    public class HealthDestroySystem : JobComponentSystem
+  [UsedImplicitly]
+  public class HealthDestroySystem : SystemBase
+  {
+    protected override void OnUpdate()
     {
-        protected override JobHandle OnUpdate(JobHandle inputDeps)
+      // Modify health based on damage data
+      Entities
+        .ForEach((DynamicBuffer<CollisionBuffer> collisionBuffer, ref HealthData health) =>
         {
-            Entities.WithoutBurst().WithStructuralChanges()
-                .ForEach((Entity entity, ref HealthData healthData) =>
-                {
-                    if (healthData.health > 0f) return;
+          for (var i = 0; i < collisionBuffer.Length; ++i)
+          {
+            if (HasComponent<DamageData>(collisionBuffer[i].Entity))
+            {
+              health.Value -= GetComponent<DamageData>(collisionBuffer[i].Entity).Value;
+            }
+          }
+        }).Schedule();
 
-                    bool isPlayer;
-                    try
-                    {
-                        var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-                        var _ = entityManager.GetComponentData<PlayerData>(entity);
-                        isPlayer = true;
-                    }
-                    catch (ArgumentException)
-                    {
-                        // it's not the player!
-                        isPlayer = false;
-                    }
-
-                    if (isPlayer)
-                    {
-                        GameManager.GameOver();
-                    }
-
-                    EntityManager.DestroyEntity(entity);
-                }).Run();
-
-            return inputDeps;
-        }
+      // For entities that can be destroyed, add a lifetime component
+      Entities
+        .WithNone<LifetimeData>()
+        .ForEach((Entity entity, ref HealthData health) =>
+        {
+          if (health.Value <= 0f)
+          {
+            EntityManager.AddComponentData(entity, new LifetimeData
+            {
+              Value = health.DestroyTime
+            });
+          }
+        })
+        .WithStructuralChanges()
+        .Run();
     }
+  }
 }

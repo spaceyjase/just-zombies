@@ -3,9 +3,8 @@
 namespace Assets.Project.Scripts.Data
 {
   [GenerateAuthoringComponent]
-  public struct HealthData : IComponentData
+  public struct DamageData : IComponentData
   {
     public float Value;
-    public float DestroyTime;
   }
 }
