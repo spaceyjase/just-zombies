@@ -1,4 +1,5 @@
-﻿using Assets.Project.Scripts.Components;
+﻿using Assets.Project.Scripts.Bullet;
+using Assets.Project.Scripts.Components;
 using Assets.Project.Scripts.Data;
 using Assets.Project.Scripts.Zombie;
 using JetBrains.Annotations;
