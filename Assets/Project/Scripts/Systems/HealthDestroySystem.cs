@@ -33,7 +33,8 @@ namespace Assets.Project.Scripts.Systems
       // For entities that can be destroyed, add a lifetime component
       Entities
         .WithNone<LifetimeData>()
-        .ForEach((Entity entity, ref HealthData health) =>
+        .WithStructuralChanges()
+        .ForEach((Entity entity, in HealthData health) =>
         {
           if (health.Value <= 0f)
           {
@@ -42,9 +43,7 @@ namespace Assets.Project.Scripts.Systems
               Value = health.DestroyTime
             });
           }
-        })
-        .WithStructuralChanges()
-        .Run();
+        }).Run();
     }
   }
 }
