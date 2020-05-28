@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using Assets.Project.Scripts.Player;
+using Assets.Project.Scripts.Systems;
 using Assets.Project.Scripts.Utility;
 using Assets.Project.Scripts.Zombie;
 using JetBrains.Annotations;
@@ -73,7 +74,9 @@ namespace Assets.Project.Scripts.Managers
     {
       if (instance == null) return;
 
+      World.DefaultGameObjectInjectionWorld.GetExistingSystem<GameStateSystem>().Enabled = false;
       instance.gameOver = true;
+      // TODO: do game over UI, sounds, etc
       Debug.Log("GAME OVER");
     }
 
@@ -138,9 +141,9 @@ namespace Assets.Project.Scripts.Managers
       var prefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(playerPrefab, settings);
       var player = manager.Instantiate(prefab);
 
-        playerTracker.SetReceivedEntity(player);
+      playerTracker.SetReceivedEntity(player);
 
-        prefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(bulletPrefab, settings);
+      prefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(bulletPrefab, settings);
 
       manager.SetComponentData(player, new Translation { Value = new float3(0f, 0f, 0f) });
       manager.SetComponentData(player, new PlayerData

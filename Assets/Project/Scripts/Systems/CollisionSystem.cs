@@ -21,13 +21,6 @@ namespace Assets.Project.Scripts.Systems
       {
         var entityA = collisionEvent.Entities.EntityA;
         var entityB = collisionEvent.Entities.EntityB;
-        var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-
-        if (entityManager.HasComponent<ZombieData>(entityA) &&
-            entityManager.HasComponent<ZombieData>(entityB))
-        { // Zombies don't destroy each another
-          return;
-        }
 
         if (Collisions.Exists(entityA))
         {

@@ -19,21 +19,18 @@ namespace Assets.Project.Scripts.Utility
 
     private void LateUpdate()
     {
-      if (trackedEntity == null) return;
+      if (trackedEntity.Equals(Entity.Null)) return;
 
       if (GameManager.IsGameOver) return;
-
       try
       {
         var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         transform.position = entityManager.GetComponentData<Translation>(trackedEntity).Value;
         transform.rotation = entityManager.GetComponentData<Rotation>(trackedEntity).Value;
       }
-      catch (Exception e)
+      catch (Exception)
       {
         trackedEntity = Entity.Null;
-        // Probably game over!
-        Debug.Log(e.Message);
       }
     }
   }
