@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Assets.Project.Scripts.Data;
-using Assets.Project.Scripts.Managers;
-using Assets.Project.Scripts.Player;
+﻿using Assets.Project.Scripts.Managers;
 using JetBrains.Annotations;
 using Unity.Entities;
 

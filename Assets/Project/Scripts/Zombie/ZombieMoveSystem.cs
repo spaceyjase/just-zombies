@@ -1,12 +1,9 @@
-﻿using Assets.Project.Scripts.Data;
-using Assets.Project.Scripts.Managers;
+﻿using Assets.Project.Scripts.Managers;
 using JetBrains.Annotations;
-using Unity.Collections;
 using Unity.Entities;
-using Unity.Jobs;
 using Unity.Mathematics;
+using Unity.Physics;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace Assets.Project.Scripts.Zombie
 {
@@ -24,10 +21,10 @@ namespace Assets.Project.Scripts.Zombie
 
       Entities
         .WithAll<Zombie>()
-        .ForEach((ref Translation position, ref Rotation rotation, in ZombieData data) =>
+        .ForEach((ref PhysicsVelocity velocity, ref Rotation rotation, in Translation translation, in ZombieData data) =>
         {
-          var target = playerPosition - position.Value;
-          position.Value += data.Speed * target * deltaTime;
+          var target = playerPosition - translation.Value;
+          velocity.Linear = data.Speed * target * deltaTime;
           rotation.Value = quaternion.identity;
         }).Schedule();
     }

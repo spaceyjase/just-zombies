@@ -1,5 +1,4 @@
 ﻿using Unity.Entities;
-using Unity.Mathematics;
 
 namespace Assets.Project.Scripts.Bullet
 {
