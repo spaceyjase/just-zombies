@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using Assets.Project.Scripts.Player;
 using Assets.Project.Scripts.Systems;
@@ -25,6 +26,8 @@ namespace Assets.Project.Scripts.Managers
     [Header("UI controls")]
     [SerializeField]
     private TextMeshProUGUI timerText;
+    [SerializeField]
+    private TextMeshProUGUI scoreText;
 
     [Header("Game settings")]
     [SerializeField]
@@ -66,6 +69,7 @@ namespace Assets.Project.Scripts.Managers
     private GameObjectConversionSettings settings;
     private Coroutine timerCoroutine;
     private float timer;
+    private int score;
 
     private BlobAssetStore store;
 
@@ -75,6 +79,16 @@ namespace Assets.Project.Scripts.Managers
     public static float BulletLifetimeInSeconds => instance == null ? 0f : instance.bulletLifetimeInSeconds;
     public static float BulletSpeed => instance == null ? 0f : instance.bulletSpeed;
     public static Vector3 PlayerPosition => instance == null ? Vector3.zero : instance.playerTracker.gameObject.transform.position;
+    public static int Score
+    {
+      get => instance ? instance.score : 0;
+      set
+      {
+        if (instance == null) return;
+        instance.score = value;
+        instance.scoreText.text = $"{instance.score}";
+      }
+    }
     #endregion
 
     public static void GameOver()

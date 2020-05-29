@@ -30,18 +30,19 @@ namespace Assets.Project.Scripts.Systems
         }).Schedule();
 
       // For entities that can be destroyed, add a lifetime component
+      var ecb = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>().CreateCommandBuffer();
       Entities
+        .WithoutBurst()
         .WithNone<LifetimeData>()
-        .WithStructuralChanges()
         .ForEach((Entity entity, in HealthData health) =>
         {
-          if (health.Value <= 0f)
+          if (health.Value > 0f) return;
+
+          if (HasComponent<Zombie.Zombie>(entity)) { GameManager.Score++; }
+          ecb.AddComponent(entity, new LifetimeData
           {
-            EntityManager.AddComponentData(entity, new LifetimeData
-            {
-              Value = health.DestroyTime
-            });
-          }
+            Value = health.DestroyTime
+          });
         }).Run();
     }
   }
