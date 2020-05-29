@@ -5,6 +5,7 @@ using Assets.Project.Scripts.Systems;
 using Assets.Project.Scripts.Utility;
 using Assets.Project.Scripts.Zombie;
 using JetBrains.Annotations;
+using TMPro;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -20,6 +21,10 @@ namespace Assets.Project.Scripts.Managers
     private GameObject horizontalPrefab = null;
     [SerializeField]
     private GameObject verticalPrefab = null;
+
+    [Header("UI controls")]
+    [SerializeField]
+    private TextMeshProUGUI timerText;
 
     [Header("Game settings")]
     [SerializeField]
@@ -59,6 +64,8 @@ namespace Assets.Project.Scripts.Managers
     private bool gameOver = false;
     private EntityManager manager;
     private GameObjectConversionSettings settings;
+    private Coroutine timerCoroutine;
+    private float timer;
 
     private BlobAssetStore store;
 
@@ -76,6 +83,7 @@ namespace Assets.Project.Scripts.Managers
 
       World.DefaultGameObjectInjectionWorld.GetExistingSystem<GameStateSystem>().Enabled = false;
       instance.gameOver = true;
+
       // TODO: do game over UI, sounds, etc
       Debug.Log("GAME OVER");
     }
@@ -110,9 +118,33 @@ namespace Assets.Project.Scripts.Managers
 
     private void Initialise()
     {
+      timer = gameLengthInSeconds;
+
       SpawnLevelGeometry();
       SpawnPlayer();
       StartCoroutine(nameof(SpawnZombies));
+      StartCoroutine(DoTimer());
+    }
+
+    private IEnumerator DoTimer()
+    {
+      // Game running...
+      while (!gameOver && timer > 0)
+      {
+        yield return new WaitForSeconds(0.1f);
+        timer -= 0.1f;
+        UpdateTime();
+      }
+      // TODO: Win!
+    }
+
+    private void UpdateTime()
+    {
+      if (timer < 0)
+      {
+        timer = 0f;
+      }
+      timerText.text = timer.ToString("F1");
     }
 
     private void SpawnLevelGeometry()
