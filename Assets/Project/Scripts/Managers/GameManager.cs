@@ -59,6 +59,8 @@ namespace Assets.Project.Scripts.Managers
     [SerializeField]
     private GameObject[] zombiePrefabs = null;
     [SerializeField]
+    private GameObject bloodParticles = null;
+    [SerializeField]
     private float minZombieSpeed = 1f;
     [SerializeField]
     private float maxZombieSpeed = 10f;
@@ -247,6 +249,13 @@ namespace Assets.Project.Scripts.Managers
 
         yield return new WaitForSeconds(currentRate);
       }
+    }
+
+    public static void ZombieSfx(Vector2 position)  // TODO: revisit using OnDestroy system
+    {
+      if (instance == null) { return; } 
+
+      GameObject.Instantiate(instance.bloodParticles, position, Quaternion.identity);
     }
   }
 }

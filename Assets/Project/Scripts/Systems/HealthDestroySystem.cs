@@ -3,6 +3,8 @@ using Assets.Project.Scripts.Data;
 using Assets.Project.Scripts.Managers;
 using JetBrains.Annotations;
 using Unity.Entities;
+using Unity.Transforms;
+using UnityEngine;
 
 namespace Assets.Project.Scripts.Systems
 {
@@ -29,9 +31,14 @@ namespace Assets.Project.Scripts.Systems
         .WithNone<LifetimeData>()
         .ForEach((Entity entity, in HealthData health) =>
         {
-          if (health.Value > 0f) return;
+          if (health.Value > 0f) { return; }
 
-          if (HasComponent<Zombie.Zombie>(entity)) { GameManager.Score++; }
+          if (HasComponent<Zombie.Zombie>(entity))
+          { 
+            GameManager.Score++;
+            var translation = GetComponent<Translation>(entity);
+            GameManager.ZombieSfx(new Vector2(translation.Value.x, translation.Value.y));
+          }
           ecb.AddComponent(entity, new LifetimeData
           {
             Value = health.DestroyTime
