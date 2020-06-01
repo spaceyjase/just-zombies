@@ -62,6 +62,8 @@ namespace Assets.Project.Scripts.Managers
     private float minZombieSpeed = 1f;
     [SerializeField]
     private float maxZombieSpeed = 10f;
+    [SerializeField]
+    private float zombieSpawnSfxChange = 0.995f;
 
     private static GameManager instance;
     private bool gameOver = false;
@@ -230,6 +232,12 @@ namespace Assets.Project.Scripts.Managers
         y *= Random.value > 0.5f ? 1 : -1;
         var position = transform.TransformPoint(new float3(x, y, 0f));
         manager.SetComponentData(zombie, new Translation { Value = position });
+
+        // Audio
+        if (Random.value > zombieSpawnSfxChange)
+        {
+          AudioManager.PlayZombieSpawnSfx(Vector3.zero);
+        }
 
         // Data
         manager.SetComponentData(zombie, new ZombieData
