@@ -132,7 +132,7 @@ namespace Assets.Project.Scripts.Managers
 
     private void Initialise()
     {
-      timer = gameLengthInSeconds;
+      timer = 0f;
 
       SpawnLevelGeometry();
       SpawnPlayer();
@@ -143,10 +143,10 @@ namespace Assets.Project.Scripts.Managers
     private IEnumerator DoTimer()
     {
       // Game running...
-      while (!gameOver && timer > 0)
+      while (!gameOver && timer < gameLengthInSeconds)
       {
         yield return new WaitForSeconds(0.1f);
-        timer -= 0.1f;
+        timer += 0.1f;
         UpdateTime();
       }
       // TODO: Win!
@@ -158,7 +158,7 @@ namespace Assets.Project.Scripts.Managers
       {
         timer = 0f;
       }
-      timerText.text = timer.ToString("F1");
+      timerText.text = timer.ToString("00.0");
     }
 
     private void SpawnLevelGeometry()
