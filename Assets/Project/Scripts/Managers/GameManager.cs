@@ -21,12 +21,16 @@ namespace Assets.Project.Scripts.Managers
     private GameObject horizontalPrefab = null;
     [SerializeField]
     private GameObject verticalPrefab = null;
+    [SerializeField]
+    private Color[] levelBackgrounds = null;
 
     [Header("UI controls")]
     [SerializeField]
     private TextMeshProUGUI timerText;
     [SerializeField]
     private TextMeshProUGUI scoreText;
+    [SerializeField]
+    private GameObject gameOverUi;
 
     [Header("Game settings")]
     [SerializeField]
@@ -45,6 +49,10 @@ namespace Assets.Project.Scripts.Managers
     private float playerSpeed = 10f;
     [SerializeField]
     private float fireRate = 0.1f;
+    [SerializeField]
+    private GameObject heartBeat = null;
+    [SerializeField]
+    private GameObject fastHeartBeat = null;
 
     [Header("Bullet settings")]
     [SerializeField]
@@ -69,11 +77,11 @@ namespace Assets.Project.Scripts.Managers
     private float zombieSpawnSfxChange = 0.995f;
 
     private static GameManager instance;
-    private bool gameOver = false;
+    private bool gameOver;
     private EntityManager manager;
     private GameObjectConversionSettings settings;
-    private Coroutine timerCoroutine;
     private float timer;
+    private int level;
     private int score;
 
     private BlobAssetStore store;
@@ -107,6 +115,11 @@ namespace Assets.Project.Scripts.Managers
 
       AudioManager.PlaySfx("Player Death");
       _ = Instantiate(instance.playerDeathPrefab, PlayerPosition, instance.playerDeathPrefab.transform.rotation);
+
+      instance.heartBeat.SetActive(false);
+      instance.fastHeartBeat.SetActive(false);
+
+      instance.gameOverUi.SetActive(true);
 
       Debug.Log("GAME OVER");
     }
@@ -142,6 +155,7 @@ namespace Assets.Project.Scripts.Managers
     private void Initialise()
     {
       timer = 0f;
+      level = 0;
 
       SpawnLevelGeometry();
       SpawnPlayer();
@@ -193,6 +207,8 @@ namespace Assets.Project.Scripts.Managers
 
     private void SpawnPlayer()
     {
+      heartBeat.SetActive(true);
+
       var prefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(playerPrefab, settings);
       var player = manager.Instantiate(prefab);
 
@@ -225,7 +241,7 @@ namespace Assets.Project.Scripts.Managers
           currentRate -= rate;
           if (currentRate < 0f) currentRate = 0f;
           currentTime += levelTime;
-          // TODO: notify spawn rate change, increased level (messenger)
+          LevelChanged();
         }
         // Create
         var zombie = manager.Instantiate(entities[Random.Range(0, entities.Count)]);
@@ -254,6 +270,18 @@ namespace Assets.Project.Scripts.Managers
 
         yield return new WaitForSeconds(currentRate);
       }
+    }
+
+    private void LevelChanged()
+    {
+      // TODO: notify spawn rate change, increased level (messenger?)
+      if (timer > gameLengthInSeconds / 2f)
+      {
+        heartBeat.SetActive(false);
+        fastHeartBeat.SetActive(true);
+      }
+      // Change background accordingly
+      UnityEngine.Camera.main.backgroundColor = levelBackgrounds[++level % levelBackgrounds.Length];
     }
 
     public static void ZombieSfx(Vector2 position)  // TODO: revisit using OnDestroy system
