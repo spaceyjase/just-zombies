@@ -41,16 +41,16 @@ namespace Assets.Project.Scripts.Player
         if (Mathf.Approximately(inputX, 0f)) return;
       }
 
-      // Got this far so user is pressing a fire button...
+      // Got this far so user is pressing a fire button... but is it time to fire?
+      nextFireTime += Time.DeltaTime;
+      if (!(nextFireTime > GameManager.FireRate)) return;
 
       var targetAngle = 0f;
       if (inputY > 0f) targetAngle = 90f * Mathf.Deg2Rad;          // up
       else if (inputY < 0f) targetAngle = 270f * Mathf.Deg2Rad;    // down
       else if (inputX > 0f) targetAngle = 0f * Mathf.Deg2Rad;      // left
-      else if (inputX < 0f) targetAngle = 180f * Mathf.Deg2Rad;    // rigth
+      else if (inputX < 0f) targetAngle = 180f * Mathf.Deg2Rad;    // right
 
-      nextFireTime += Time.DeltaTime;
-      if (!(nextFireTime > GameManager.FireRate)) return;
 
       Entities.WithoutBurst().WithStructuralChanges()
           .ForEach((ref Translation position, ref Rotation rotation, ref PlayerData data) =>
@@ -69,6 +69,7 @@ namespace Assets.Project.Scripts.Player
               Speed = GameManager.BulletSpeed,
               Lifetime = GameManager.BulletLifetimeInSeconds
             });
+            AudioManager.PlaySfx("Shoot");  // TODO: OnAwake system, also magic string
           }).Run();
 
       nextFireTime = 0f;

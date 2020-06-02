@@ -490,7 +490,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 52
+  orthographic size: 42
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -645,12 +645,21 @@ MonoBehaviour:
   sounds:
   - name: Player Death
     clip: {fileID: 8300000, guid: bb180800f5b6e324f9afb3a2726e462d, type: 3}
-    volume: 0.75
+    volume: 0.65
     pitch: 1
     loop: 0
     randomisePitch: 1
     lowPitchRange: 0.98
     highPitchRange: 1.05
+    loadOnStartup: 1
+  - name: Shoot
+    clip: {fileID: 8300000, guid: d3247579c549643a5b3a95f9224eaf3c, type: 3}
+    volume: 0.25
+    pitch: 1
+    loop: 0
+    randomisePitch: 1
+    lowPitchRange: 0.8
+    highPitchRange: 1.2
     loadOnStartup: 1
 --- !u!4 &783667909
 Transform:

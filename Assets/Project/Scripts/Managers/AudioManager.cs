@@ -58,6 +58,13 @@ namespace Assets.Project.Scripts.Managers
       var sound = Array.Find(instance.sounds, s => s.name == name);
       sound?.Play();
     }
+    public static void PlaySfx(string name, Vector3 position)
+    {
+      if (instance == null) { return; }
+
+      var sound = Array.Find(instance.sounds, s => s.name == name);
+      sound?.Play(position);
+    }
   }
 }
 
