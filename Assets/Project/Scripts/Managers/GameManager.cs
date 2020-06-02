@@ -31,6 +31,8 @@ namespace Assets.Project.Scripts.Managers
     private TextMeshProUGUI scoreText;
     [SerializeField]
     private GameObject gameOverUi;
+    [SerializeField]
+    private float backgroundTransitionStep = .1f;
 
     [Header("Game settings")]
     [SerializeField]
@@ -83,6 +85,7 @@ namespace Assets.Project.Scripts.Managers
     private float timer;
     private int level;
     private int score;
+    private UnityEngine.Camera mainCamera;
 
     private BlobAssetStore store;
 
@@ -156,6 +159,7 @@ namespace Assets.Project.Scripts.Managers
     {
       timer = 0f;
       level = 0;
+      mainCamera = UnityEngine.Camera.main;
 
       SpawnLevelGeometry();
       SpawnPlayer();
@@ -186,8 +190,8 @@ namespace Assets.Project.Scripts.Managers
 
     private void SpawnLevelGeometry()
     {
-      var height = UnityEngine.Camera.main.orthographicSize;
-      var width = UnityEngine.Camera.main.orthographicSize * UnityEngine.Camera.main.aspect;
+      var height = mainCamera.orthographicSize;
+      var width = mainCamera.orthographicSize * UnityEngine.Camera.main.aspect;
 
       // Position walls just outside of camera boundary
       var offset = verticalPrefab.transform.localScale.x / 2f;
@@ -233,7 +237,7 @@ namespace Assets.Project.Scripts.Managers
       var currentRate = rate * levelTime;   // starting rate is easy peasy
 
       var entities = zombiePrefabs.Select(zombiePrefab => GameObjectConversionUtility.ConvertGameObjectHierarchy(zombiePrefab, settings)).ToList();
-      var currentTime = 10f;
+      var currentTime = levelTime;
       while (!gameOver)
       {
         if (Time.time > currentTime)
@@ -247,8 +251,8 @@ namespace Assets.Project.Scripts.Managers
         var zombie = manager.Instantiate(entities[Random.Range(0, entities.Count)]);
 
         // TODO: Set spawn location (defined in editor?)
-        float height = UnityEngine.Camera.main.orthographicSize + 1;
-        float width = UnityEngine.Camera.main.orthographicSize * UnityEngine.Camera.main.aspect;
+        float height = mainCamera.orthographicSize + 1;
+        float width = mainCamera.orthographicSize * UnityEngine.Camera.main.aspect;
         float x = Random.Range(width, width + 300);
         float y = Random.Range(height, height + 300);
         x *= Random.value > 0.5f ? 1 : -1;
@@ -279,8 +283,7 @@ namespace Assets.Project.Scripts.Managers
         heartBeat.SetActive(false);
         fastHeartBeat.SetActive(true);
       }
-      // Change background accordingly
-      UnityEngine.Camera.main.backgroundColor = levelBackgrounds[++level % levelBackgrounds.Length];
+      StartCoroutine(ChangeBackground(++level));
     }
 
     public static void ZombieSfx(Vector2 position)  // TODO: revisit using OnDestroy system
@@ -288,6 +291,20 @@ namespace Assets.Project.Scripts.Managers
       if (instance == null) { return; }
 
       Instantiate(instance.bloodParticles, position, instance.bloodParticles.transform.rotation);
+    }
+
+    private IEnumerator ChangeBackground(int newLevel)
+    {
+      var endTime = Time.time + 1f;
+      var targetColour = levelBackgrounds[newLevel % levelBackgrounds.Length];
+      var t = 0f;
+      while (Time.time < endTime)
+      {
+        mainCamera.backgroundColor = Color.Lerp(mainCamera.backgroundColor, targetColour, t);
+        t += backgroundTransitionStep;
+        yield return new WaitForSeconds(backgroundTransitionStep);
+      }
+      mainCamera.backgroundColor = targetColour;
     }
   }
 }
