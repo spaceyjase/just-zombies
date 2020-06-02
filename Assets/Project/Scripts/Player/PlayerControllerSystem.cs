@@ -1,5 +1,4 @@
 ﻿using Assets.Project.Scripts.Bullet;
-using Assets.Project.Scripts.Data;
 using Assets.Project.Scripts.Managers;
 using JetBrains.Annotations;
 using Unity.Entities;

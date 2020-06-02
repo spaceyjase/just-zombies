@@ -15,7 +15,7 @@ namespace Assets.Project.Scripts.Audio
     private float volume;
     [Range(0.1f, 3f)]
     [SerializeField]
-    private float pitch = 1;
+    private float pitch = 1f;
     [SerializeField]
     private bool loop;
     [SerializeField]

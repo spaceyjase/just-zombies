@@ -17,11 +17,12 @@ namespace Assets.Project.Scripts.Utility
       trackedEntity = entity;
     }
 
+    [UsedImplicitly]
     private void LateUpdate()
     {
-      if (trackedEntity.Equals(Entity.Null)) return;
+      if (trackedEntity.Equals(Entity.Null)) { return; }
+      if (GameManager.IsGameOver) { return; }
 
-      if (GameManager.IsGameOver) return;
       try
       {
         var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;

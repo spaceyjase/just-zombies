@@ -34,7 +34,7 @@ namespace Assets.Project.Scripts.Systems
           if (health.Value > 0f) { return; }
 
           if (HasComponent<Zombie.Zombie>(entity))
-          { 
+          {
             GameManager.Score++;
             var translation = GetComponent<Translation>(entity);
             GameManager.ZombieSfx(new Vector2(translation.Value.x, translation.Value.y));

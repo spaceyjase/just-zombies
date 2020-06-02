@@ -274,7 +274,6 @@ namespace Assets.Project.Scripts.Managers
 
     private void LevelChanged()
     {
-      // TODO: notify spawn rate change, increased level (messenger?)
       if (timer > gameLengthInSeconds / 2f)
       {
         heartBeat.SetActive(false);

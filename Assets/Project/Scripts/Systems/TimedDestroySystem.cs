@@ -1,9 +1,6 @@
 ﻿using Assets.Project.Scripts.Data;
-using Assets.Project.Scripts.Managers;
-using Assets.Project.Scripts.Player;
 using JetBrains.Annotations;
 using Unity.Entities;
-using Unity.Jobs;
 
 namespace Assets.Project.Scripts.Systems
 {

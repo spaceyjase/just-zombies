@@ -1,12 +1,8 @@
-﻿using System.Diagnostics;
-using Assets.Project.Scripts.Bullet;
-using Assets.Project.Scripts.Components;
-using Assets.Project.Scripts.Zombie;
+﻿using Assets.Project.Scripts.Components;
 using JetBrains.Annotations;
 using Unity.Entities;
 using Unity.Physics;
 using Unity.Physics.Systems;
-using UnityEngine;
 
 namespace Assets.Project.Scripts.Systems
 {
