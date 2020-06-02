@@ -30,11 +30,11 @@ namespace Assets.Project.Scripts.Audio
     private bool loadOnStartup = false;
 
     public AudioSource Source { get; set; }
-    public AudioClip Clip { get { return clip; } }
-    public float Pitch { get { return pitch; } }
-    public float Volume { get { return volume; } }
-    public bool Loop { get { return loop; } }
-    public bool LoadOnStartup { get { return loadOnStartup; } }
+    public AudioClip Clip => clip;
+    public float Pitch => pitch;
+    public float Volume => volume;
+    public bool Loop => loop;
+    public bool LoadOnStartup => loadOnStartup;
 
     public void Play()
     {

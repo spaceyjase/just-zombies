@@ -642,7 +642,16 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1225b0f997026d64fa600c3fd93f1a74, type: 3}
   - {fileID: 8300000, guid: 8b9826c915109c446be0c38d54721a2d, type: 3}
   - {fileID: 8300000, guid: 5cd921b91deac4f47b05c451951f7a53, type: 3}
-  sounds: []
+  sounds:
+  - name: Player Death
+    clip: {fileID: 8300000, guid: bb180800f5b6e324f9afb3a2726e462d, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 0
+    randomisePitch: 1
+    lowPitchRange: 0.98
+    highPitchRange: 1.05
+    loadOnStartup: 1
 --- !u!4 &783667909
 Transform:
   m_ObjectHideFlags: 0
@@ -866,6 +875,8 @@ MonoBehaviour:
   gameLengthInSeconds: 60
   maxLevels: 6
   playerPrefab: {fileID: 1534994850309385710, guid: f14d0bc29d9b0c44a89e309a2078c931,
+    type: 3}
+  playerDeathPrefab: {fileID: 4973324416380344914, guid: 2ccbf8b3ccff1401c890a5ed9cc3aeee,
     type: 3}
   playerTracker: {fileID: 485075916}
   playerSpeed: 75

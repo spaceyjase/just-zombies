@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using Assets.Project.Scripts.Player;
 using Assets.Project.Scripts.Systems;
@@ -38,6 +37,8 @@ namespace Assets.Project.Scripts.Managers
     [Header("Player settings")]
     [SerializeField]
     private GameObject playerPrefab = null;
+    [SerializeField]
+    private GameObject playerDeathPrefab = null;
     [SerializeField]
     private EntityTracker playerTracker = null;
     [SerializeField]
@@ -103,6 +104,10 @@ namespace Assets.Project.Scripts.Managers
       instance.gameOver = true;
 
       // TODO: do game over UI, sounds, etc
+
+      AudioManager.PlaySfx("Player Death");
+      _ = Instantiate(instance.playerDeathPrefab, PlayerPosition, instance.playerDeathPrefab.transform.rotation);
+
       Debug.Log("GAME OVER");
     }
 
@@ -238,7 +243,7 @@ namespace Assets.Project.Scripts.Managers
         // Audio
         if (Random.value > zombieSpawnSfxChange)
         {
-          AudioManager.PlayZombieSpawnSfx(Vector3.zero);
+          AudioManager.PlayZombieSpawnSfx(new Vector3((x < 0f ? -width : width) / 2f, (y < 0f ? -height : height) / 2f, 0f));
         }
 
         // Data
@@ -253,9 +258,9 @@ namespace Assets.Project.Scripts.Managers
 
     public static void ZombieSfx(Vector2 position)  // TODO: revisit using OnDestroy system
     {
-      if (instance == null) { return; } 
+      if (instance == null) { return; }
 
-      GameObject.Instantiate(instance.bloodParticles, position, Quaternion.identity);
+      Instantiate(instance.bloodParticles, position, instance.bloodParticles.transform.rotation);
     }
   }
 }
