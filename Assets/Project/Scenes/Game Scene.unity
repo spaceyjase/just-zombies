@@ -1755,7 +1755,7 @@ MonoBehaviour:
   deathCameraTarget: 10
   gameLengthInSeconds: 60
   maxLevels: 6
-  musicFadeTimeInSeconds: 1
+  musicFadeTimeInSeconds: 2
   playerPrefab: {fileID: 1534994850309385710, guid: f14d0bc29d9b0c44a89e309a2078c931,
     type: 3}
   playerDeathPrefab: {fileID: 4973324416380344914, guid: 2ccbf8b3ccff1401c890a5ed9cc3aeee,
@@ -1769,7 +1769,7 @@ MonoBehaviour:
     type: 3}
   bulletSpeed: 5000
   bulletLifetimeInSeconds: 2
-  maxZombies: 10000
+  maxZombies: 15000
   zombiePrefabs:
   - {fileID: 3538573571263376222, guid: 41c3315e45e023944a132bc44e398c92, type: 3}
   - {fileID: 3538573571263376222, guid: 41c3315e45e023944a132bc44e398c92, type: 3}
