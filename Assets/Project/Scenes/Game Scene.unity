@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 47448338}
   - component: {fileID: 47448340}
   - component: {fileID: 47448339}
+  - component: {fileID: 47448341}
   m_Layer: 5
   m_Name: Score Panel
   m_TagString: Untagged
@@ -193,6 +194,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 47448337}
   m_CullTransparentMesh: 0
+--- !u!95 &47448341
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47448337}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 164dbd14a48d3bc40ae8e896fb131994, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &200036546
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,6 +678,7 @@ GameObject:
   - component: {fileID: 542802941}
   - component: {fileID: 542802943}
   - component: {fileID: 542802942}
+  - component: {fileID: 542802944}
   m_Layer: 5
   m_Name: Game UI
   m_TagString: Untagged
@@ -723,6 +744,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 542802940}
   m_CullTransparentMesh: 0
+--- !u!95 &542802944
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 542802940}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7921a1cb7fe894442961a9e952442722, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &611525522
 GameObject:
   m_ObjectHideFlags: 0
@@ -1300,6 +1340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e42bfb1eae8fca40a28aac620fc75e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testing: 0
   horizontalPrefab: {fileID: 7769201184259849337, guid: b21e68f880431a44389c316619208e7c,
     type: 3}
   verticalPrefab: {fileID: 780002077686348677, guid: 2472020bcb1b9814594dcdcb01ac0cf7,
@@ -1310,7 +1351,8 @@ MonoBehaviour:
   - {r: 0.2011392, g: 0.26838076, b: 0.3773585, a: 0}
   - {r: 0.16687435, g: 0.21119265, b: 0.2830189, a: 0}
   - {r: 0.08708616, g: 0.122252144, b: 0.1792453, a: 0}
-  - {r: 0.049928814, g: 0.052475844, b: 0.05660379, a: 0}
+  - {r: 0.120238535, g: 0.120238535, b: 0.13207549, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
   timerText: {fileID: 1147248297}
   finalTimerColour:
     serializedVersion: 2
@@ -1318,6 +1360,7 @@ MonoBehaviour:
   scoreText: {fileID: 1854260978}
   gameOverUi: {fileID: 745851394}
   backgroundTransitionStep: 0.1
+  scoreAnimator: {fileID: 47448341}
   gameLengthInSeconds: 60
   maxLevels: 6
   playerPrefab: {fileID: 1534994850309385710, guid: f14d0bc29d9b0c44a89e309a2078c931,

@@ -16,6 +16,10 @@ namespace Assets.Project.Scripts.Managers
 {
   public class GameManager : MonoBehaviour
   {
+    [Header("Testing")]
+    [SerializeField]
+    private bool testing = false;
+
     [Header("Level geometry")]
     [SerializeField]
     private GameObject horizontalPrefab = null;
@@ -28,11 +32,15 @@ namespace Assets.Project.Scripts.Managers
     [SerializeField]
     private TextMeshProUGUI timerText;
     [SerializeField]
+    private Color32 finalTimerColour;
+    [SerializeField]
     private TextMeshProUGUI scoreText;
     [SerializeField]
     private GameObject gameOverUi;
     [SerializeField]
     private float backgroundTransitionStep = .1f;
+    [SerializeField]
+    private Animator scoreAnimator;
 
     [Header("Game settings")]
     [SerializeField]
@@ -100,16 +108,17 @@ namespace Assets.Project.Scripts.Managers
       get => instance ? instance.score : 0;
       set
       {
-        if (instance == null) return;
+        if (instance == null || instance.gameOver) { return; }
         instance.score = value;
         instance.scoreText.text = $"{instance.score}";
+        instance.scoreAnimator.SetTrigger("scoreTrigger");
       }
     }
     #endregion
 
     public static void GameOver()
     {
-      if (instance == null) return;
+      if (instance == null || instance.testing) { return; }
 
       World.DefaultGameObjectInjectionWorld.GetExistingSystem<GameStateSystem>().Enabled = false;
       instance.gameOver = true;
@@ -157,6 +166,11 @@ namespace Assets.Project.Scripts.Managers
 
     private void Initialise()
     {
+#if UNITY_EDITOR
+      Debug.Log("Testing: " + testing);
+#else
+      testing = false;
+#endif
       timer = 0f;
       level = 0;
       mainCamera = UnityEngine.Camera.main;
@@ -181,9 +195,9 @@ namespace Assets.Project.Scripts.Managers
 
     private void UpdateTime()
     {
-      if (timer < 0)
+      if (timer > gameLengthInSeconds)
       {
-        timer = 0f;
+        timer = gameLengthInSeconds;
       }
       timerText.text = timer.ToString("00.0");
     }
@@ -278,10 +292,11 @@ namespace Assets.Project.Scripts.Managers
 
     private void LevelChanged()
     {
-      if (timer > gameLengthInSeconds / 2f)
+      if (timer > gameLengthInSeconds / 2f && !fastHeartBeat.activeInHierarchy)
       {
         heartBeat.SetActive(false);
         fastHeartBeat.SetActive(true);
+        StartCoroutine(ChangeTimer());
       }
       StartCoroutine(ChangeBackground(++level));
     }
@@ -305,6 +320,21 @@ namespace Assets.Project.Scripts.Managers
         yield return new WaitForSeconds(backgroundTransitionStep);
       }
       mainCamera.backgroundColor = targetColour;
+    }
+
+    private IEnumerator ChangeTimer()
+    {
+      var startTime = Time.time;
+      var duration = gameLengthInSeconds / 2f;
+      var endTime = Time.time + duration;
+
+      while (!gameOver && Time.time < endTime)
+      {
+        var t = (Time.time - startTime) * .1f;
+        timerText.faceColor = Color32.Lerp(timerText.faceColor, finalTimerColour, t / duration);
+        timerText.fontSize = Mathf.Lerp(timerText.fontSize, 115f, t / duration);
+        yield return new WaitForSeconds(.1f);
+      }
     }
   }
 }
