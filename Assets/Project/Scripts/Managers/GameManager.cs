@@ -36,7 +36,13 @@ namespace Assets.Project.Scripts.Managers
     [SerializeField]
     private TextMeshProUGUI scoreText;
     [SerializeField]
+    private GameObject gameUi;
+    [SerializeField]
     private GameObject gameOverUi;
+    [SerializeField]
+    private TextMeshProUGUI survivedText;
+    [SerializeField]
+    private TextMeshProUGUI destroyedText;
     [SerializeField]
     private float backgroundTransitionStep = .1f;
     [SerializeField]
@@ -135,7 +141,10 @@ namespace Assets.Project.Scripts.Managers
       instance.heartBeat.SetActive(false);
       instance.fastHeartBeat.SetActive(false);
 
+      instance.gameUi.SetActive(false);
       instance.gameOverUi.SetActive(true);
+      instance.survivedText.text = $"Survived {instance.timer:00.0} secs";
+      instance.destroyedText.text = $"{Score} destroyed";
 
       instance.StartCoroutine(instance.DeathCamera());
 
