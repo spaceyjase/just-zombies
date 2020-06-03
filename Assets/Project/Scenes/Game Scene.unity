@@ -158,7 +158,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -25, y: -18}
+  m_AnchoredPosition: {x: -25, y: -17.99997}
   m_SizeDelta: {x: 620, y: 125}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &47448339
@@ -1141,6 +1141,7 @@ MonoBehaviour:
     lowPitchRange: 0.8
     highPitchRange: 1.2
     loadOnStartup: 1
+  backgroundMusic: {fileID: 783667910}
 --- !u!4 &783667909
 Transform:
   m_ObjectHideFlags: 0
@@ -1748,12 +1749,13 @@ MonoBehaviour:
   gameOverUi: {fileID: 745851394}
   survivedText: {fileID: 1566639239}
   destroyedText: {fileID: 470322050}
-  backgroundTransitionStep: 0.1
+  backgroundTransitionTimeInSeconds: 1
   scoreAnimator: {fileID: 47448341}
   deathCameraSpeed: 0.2
   deathCameraTarget: 10
   gameLengthInSeconds: 60
   maxLevels: 6
+  musicFadeTimeInSeconds: 1
   playerPrefab: {fileID: 1534994850309385710, guid: f14d0bc29d9b0c44a89e309a2078c931,
     type: 3}
   playerDeathPrefab: {fileID: 4973324416380344914, guid: 2ccbf8b3ccff1401c890a5ed9cc3aeee,
@@ -1793,7 +1795,7 @@ MonoBehaviour:
     type: 3}
   minZombieSpeed: 3
   maxZombieSpeed: 15
-  zombieSpawnSfxChange: 0.8
+  zombieSpawnSfxChance: 0.8
 --- !u!1 &1566639237
 GameObject:
   m_ObjectHideFlags: 0

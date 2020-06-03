@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class GameOverEventHandler : MonoBehaviour
 {
+  public void OnGameOverAnimationShown()
+  {
+    GameManager.GameOverUiShown();
+  }
+
   public void OnGameOverAnimationCompleted()
   {
     GameManager.GameOverCompleted();

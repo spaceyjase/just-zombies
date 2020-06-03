@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Assets.Project.Scripts.Audio;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace Assets.Project.Scripts.Managers
     private AudioClip[] zombieSpawnSounds;
     [SerializeField]
     private Sound[] sounds;
+    [SerializeField]
+    private AudioSource backgroundMusic;
 
     private static AudioManager instance;
 
@@ -59,12 +62,20 @@ namespace Assets.Project.Scripts.Managers
       sound?.Play();
     }
 
-    public static void PlaySfx(string name, Vector3 position)
+    public static void FadeMusic(float fadeDuration)
     {
       if (instance == null) { return; }
+      instance.StartCoroutine(instance.FadeBackgroundMusic(fadeDuration));
+    }
 
-      var sound = Array.Find(instance.sounds, s => s.name == name);
-      sound?.Play(position);
+    private IEnumerator FadeBackgroundMusic(float fadeDuration)
+    {
+      var endTime = Time.time + fadeDuration;
+      while (Time.time < endTime)
+      {
+        backgroundMusic.volume = Mathf.Lerp(backgroundMusic.volume, 0f, Time.deltaTime);
+        yield return new WaitForEndOfFrame();
+      }
     }
   }
 }

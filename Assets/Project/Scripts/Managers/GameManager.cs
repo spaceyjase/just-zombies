@@ -58,6 +58,8 @@ namespace Assets.Project.Scripts.Managers
     private int gameLengthInSeconds = 60;
     [SerializeField]
     private int maxLevels = 10;
+    [SerializeField]
+    private float musicFadeTimeInSeconds = 3f;
 
     [Header("Player settings")]
     [SerializeField]
@@ -95,7 +97,7 @@ namespace Assets.Project.Scripts.Managers
     [SerializeField]
     private float maxZombieSpeed = 10f;
     [SerializeField]
-    private float zombieSpawnSfxChange = 0.995f;
+    private float zombieSpawnSfxChance = 0.995f;
 
     private static GameManager instance;
     private bool gameOver;
@@ -106,7 +108,7 @@ namespace Assets.Project.Scripts.Managers
     private int score;
     private UnityEngine.Camera mainCamera;
 
-    private BlobAssetStore store; // destroyed changing scene
+    private BlobAssetStore store;
 
     #region Properties
     public static bool IsGameOver => instance == null || instance.gameOver;
@@ -182,6 +184,15 @@ namespace Assets.Project.Scripts.Managers
       manager = World.DefaultGameObjectInjectionWorld.EntityManager;
       settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, store);
       Initialise();
+    }
+
+    [UsedImplicitly]
+    private void OnDestroy()
+    {
+      if (!gameOver)
+      {
+        store.Dispose();
+      }
     }
 
     private void Initialise()
@@ -295,7 +306,7 @@ namespace Assets.Project.Scripts.Managers
         manager.SetComponentData(zombie, new Translation { Value = position });
 
         // Audio
-        if (Random.value > zombieSpawnSfxChange)
+        if (Random.value > zombieSpawnSfxChance)
         {
           AudioManager.PlayZombieSpawnSfx(new Vector3((x < 0f ? -width : width) / 2f, (y < 0f ? -height : height) / 2f, 0f));
         }
@@ -368,6 +379,12 @@ namespace Assets.Project.Scripts.Managers
       }
 
       SceneManager.LoadScene(0);
+    }
+
+    public static void GameOverUiShown()
+    {
+      if (instance == null) { return; }
+      AudioManager.FadeMusic(instance.musicFadeTimeInSeconds);
     }
   }
 }
