@@ -1361,6 +1361,8 @@ MonoBehaviour:
   gameOverUi: {fileID: 745851394}
   backgroundTransitionStep: 0.1
   scoreAnimator: {fileID: 47448341}
+  deathCameraSpeed: 0.2
+  deathCameraTarget: 10
   gameLengthInSeconds: 60
   maxLevels: 6
   playerPrefab: {fileID: 1534994850309385710, guid: f14d0bc29d9b0c44a89e309a2078c931,

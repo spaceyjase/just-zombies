@@ -41,6 +41,10 @@ namespace Assets.Project.Scripts.Managers
     private float backgroundTransitionStep = .1f;
     [SerializeField]
     private Animator scoreAnimator;
+    [SerializeField]
+    private float deathCameraSpeed = 0.25f;
+    [SerializeField]
+    private float deathCameraTarget = 10f;
 
     [Header("Game settings")]
     [SerializeField]
@@ -133,7 +137,19 @@ namespace Assets.Project.Scripts.Managers
 
       instance.gameOverUi.SetActive(true);
 
+      instance.StartCoroutine(instance.DeathCamera());
+
       Debug.Log("GAME OVER");
+    }
+
+    private IEnumerator DeathCamera()
+    {
+      while (mainCamera.orthographicSize > deathCameraTarget)
+      {
+        mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, PlayerPosition, Time.deltaTime * deathCameraSpeed);
+        mainCamera.orthographicSize = Mathf.Lerp(mainCamera.orthographicSize, 0f, Time.deltaTime * deathCameraSpeed);
+        yield return new WaitForEndOfFrame();
+      }
     }
 
     [UsedImplicitly]
