@@ -1312,8 +1312,12 @@ MonoBehaviour:
   - {r: 0.08708616, g: 0.122252144, b: 0.1792453, a: 0}
   - {r: 0.049928814, g: 0.052475844, b: 0.05660379, a: 0}
   timerText: {fileID: 1147248297}
+  finalTimerColour:
+    serializedVersion: 2
+    rgba: 4278190335
   scoreText: {fileID: 1854260978}
   gameOverUi: {fileID: 745851394}
+  backgroundTransitionStep: 0.1
   gameLengthInSeconds: 60
   maxLevels: 6
   playerPrefab: {fileID: 1534994850309385710, guid: f14d0bc29d9b0c44a89e309a2078c931,
