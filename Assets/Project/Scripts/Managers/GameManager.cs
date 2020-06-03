@@ -10,6 +10,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 namespace Assets.Project.Scripts.Managers
@@ -105,7 +106,7 @@ namespace Assets.Project.Scripts.Managers
     private int score;
     private UnityEngine.Camera mainCamera;
 
-    private BlobAssetStore store;
+    private BlobAssetStore store; // destroyed changing scene
 
     #region Properties
     public static bool IsGameOver => instance == null || instance.gameOver;
@@ -181,12 +182,6 @@ namespace Assets.Project.Scripts.Managers
       manager = World.DefaultGameObjectInjectionWorld.EntityManager;
       settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, store);
       Initialise();
-    }
-
-    [UsedImplicitly]
-    private void OnDestroy()
-    {
-      store.Dispose();
     }
 
     private void Initialise()
@@ -360,6 +355,20 @@ namespace Assets.Project.Scripts.Managers
         timerText.fontSize = Mathf.Lerp(timerText.fontSize, 115f, t / duration);
         yield return new WaitForSeconds(.1f);
       }
+    }
+
+    public static void GameOverCompleted()
+    {
+      if (instance == null && !IsGameOver) { return; }
+
+      var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+      var array = entityManager.GetAllEntities();
+      foreach (var entity in array)
+      {
+        entityManager.DestroyEntity(entity);
+      }
+
+      SceneManager.LoadScene(0);
     }
   }
 }
