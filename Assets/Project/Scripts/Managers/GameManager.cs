@@ -45,7 +45,7 @@ namespace Assets.Project.Scripts.Managers
     [SerializeField]
     private TextMeshProUGUI destroyedText;
     [SerializeField]
-    private float backgroundTransitionStep = .1f;
+    private float backgroundTransitionTimeInSeconds = 1f;
     [SerializeField]
     private Animator scoreAnimator;
     [SerializeField]
@@ -330,16 +330,15 @@ namespace Assets.Project.Scripts.Managers
 
     private IEnumerator ChangeBackground(int newLevel)
     {
-      var endTime = Time.time + 1f;
+      var startTime = Time.time;
+      var endTime = Time.time + backgroundTransitionTimeInSeconds;
       var targetColour = levelBackgrounds[newLevel % levelBackgrounds.Length];
-      var t = 0f;
-      while (Time.time < endTime)
+      while (!gameOver && Time.time < endTime)
       {
-        mainCamera.backgroundColor = Color.Lerp(mainCamera.backgroundColor, targetColour, t);
-        t += backgroundTransitionStep;
-        yield return new WaitForSeconds(backgroundTransitionStep);
+        var t = (Time.time - startTime) * Time.deltaTime;
+        mainCamera.backgroundColor = Color.Lerp(mainCamera.backgroundColor, targetColour, t / backgroundTransitionTimeInSeconds);
+        yield return new WaitForEndOfFrame();
       }
-      mainCamera.backgroundColor = targetColour;
     }
 
     private IEnumerator ChangeTimer()
@@ -350,10 +349,10 @@ namespace Assets.Project.Scripts.Managers
 
       while (!gameOver && Time.time < endTime)
       {
-        var t = (Time.time - startTime) * .1f;
+        var t = (Time.time - startTime) * Time.deltaTime;
         timerText.faceColor = Color32.Lerp(timerText.faceColor, finalTimerColour, t / duration);
         timerText.fontSize = Mathf.Lerp(timerText.fontSize, 115f, t / duration);
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForEndOfFrame();
       }
     }
 
