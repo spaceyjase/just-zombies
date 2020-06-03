@@ -69,6 +69,7 @@ namespace Assets.Project.Scripts.Player
               Lifetime = GameManager.BulletLifetimeInSeconds
             });
             AudioManager.PlaySfx("Shoot");  // TODO: OnAwake system, also magic string
+            EffectManager.Shake();
           }).Run();
 
       nextFireTime = 0f;
