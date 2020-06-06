@@ -333,7 +333,7 @@ namespace Assets.Project.Scripts.Managers
       var currentTime = levelTime;
       while (!gameOver)
       {
-        if (Time.time > currentTime)
+        if (Time.timeSinceLevelLoad > currentTime)
         {
           currentRate -= rate;
           if (currentRate < 0f) currentRate = 0f;
@@ -389,12 +389,12 @@ namespace Assets.Project.Scripts.Managers
 
     private IEnumerator ChangeBackground(int newLevel)
     {
-      var startTime = Time.time;
-      var endTime = Time.time + backgroundTransitionTimeInSeconds;
+      var startTime = Time.timeSinceLevelLoad;
+      var endTime = Time.timeSinceLevelLoad + backgroundTransitionTimeInSeconds;
       var targetColour = levelBackgrounds[newLevel % levelBackgrounds.Length];
-      while (!gameOver && Time.time < endTime)
+      while (!gameOver && Time.timeSinceLevelLoad < endTime)
       {
-        var t = (Time.time - startTime) * Time.deltaTime;
+        var t = (Time.timeSinceLevelLoad - startTime) * Time.deltaTime;
         mainCamera.backgroundColor = Color.Lerp(mainCamera.backgroundColor, targetColour, t / backgroundTransitionTimeInSeconds);
         yield return new WaitForEndOfFrame();
       }
@@ -402,13 +402,13 @@ namespace Assets.Project.Scripts.Managers
 
     private IEnumerator ChangeTimer()
     {
-      var startTime = Time.time;
+      var startTime = Time.timeSinceLevelLoad;
       var duration = gameLengthInSeconds / 2f;
-      var endTime = Time.time + duration;
+      var endTime = Time.timeSinceLevelLoad + duration;
 
-      while (!gameOver && Time.time < endTime)
+      while (!gameOver && Time.timeSinceLevelLoad < endTime)
       {
-        var t = (Time.time - startTime) * Time.deltaTime;
+        var t = (Time.timeSinceLevelLoad - startTime) * Time.deltaTime;
         timerText.faceColor = Color32.Lerp(timerText.faceColor, finalTimerColour, t / duration);
         timerText.fontSize = Mathf.Lerp(timerText.fontSize, 115f, t / duration);
         yield return new WaitForEndOfFrame();

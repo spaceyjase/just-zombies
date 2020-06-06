@@ -70,8 +70,8 @@ namespace Assets.Project.Scripts.Managers
 
     private IEnumerator FadeBackgroundMusic(float fadeDuration)
     {
-      var endTime = Time.time + fadeDuration;
-      while (Time.time < endTime)
+      var endTime = Time.timeSinceLevelLoad + fadeDuration;
+      while (Time.timeSinceLevelLoad < endTime)
       {
         backgroundMusic.volume = Mathf.Lerp(backgroundMusic.volume, 0f, Time.deltaTime);
         yield return new WaitForEndOfFrame();
