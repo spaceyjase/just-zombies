@@ -1,17 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Assets.Project.Scripts.Managers;
+﻿using Assets.Project.Scripts.Managers;
+using JetBrains.Annotations;
 using UnityEngine;
 
-public class GameOverEventHandler : MonoBehaviour
+namespace Assets.Project.Scripts.UI
 {
-  public void OnGameOverAnimationShown()
+  [UsedImplicitly]
+  public class GameOverEventHandler : MonoBehaviour
   {
-    GameManager.GameOverUiShown();
-  }
+    [UsedImplicitly]
+    public void OnGameOverAnimationShown()
+    {
+      GameManager.GameOverUiShown();
+    }
 
-  public void OnGameOverAnimationCompleted()
-  {
-    GameManager.GameOverCompleted();
+    [UsedImplicitly]
+    public void OnGameOverAnimationCompleted()
+    {
+      GameManager.GameOverCompleted();
+    }
   }
 }
