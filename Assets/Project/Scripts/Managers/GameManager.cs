@@ -318,6 +318,7 @@ namespace Assets.Project.Scripts.Managers
         Speed = playerSpeed,
         Bullet = prefab
       });
+      World.DefaultGameObjectInjectionWorld.GetExistingSystem<GameStateSystem>().Enabled = true;
     }
 
     private IEnumerator SpawnZombies()
