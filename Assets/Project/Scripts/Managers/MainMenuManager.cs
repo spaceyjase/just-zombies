@@ -27,18 +27,18 @@ namespace Assets.Project.Scripts.Managers
     [UsedImplicitly]
     private void Start()
     {
-      Invoke(nameof(PlayZombieSfx), Random.Range(5, 20));
+      Invoke(nameof(PlayZombieSfx), Random.Range(2, 15));
     }
 
     private void PlayZombieSfx()
     {
       AudioManager.PlayZombieSpawnSfx(Vector3.zero);
-      Invoke(nameof(PlayZombieSfx), Random.Range(5, 20));
+      Invoke(nameof(PlayZombieSfx), Random.Range(2, 15));
     }
 
     public static void StartGame()
     {
-      if (instance == null) return;
+      if (instance == null || instance.started) return;
 
       instance.started = true;
       instance.animator.SetTrigger("fadeIn");

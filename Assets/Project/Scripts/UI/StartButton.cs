@@ -17,12 +17,11 @@ namespace Assets.Project.Scripts.UI
 
     public void OnStartClicked()
     {
-      if (!clicked)
-      {
-        clicked = true;
-        AudioManager.PlaySfx("Zombie");
-        MainMenuManager.StartGame();
-      }
+      if (clicked) return;
+
+      clicked = true;
+      AudioManager.PlaySfx("Zombie");
+      MainMenuManager.StartGame();
     }
   }
 }
