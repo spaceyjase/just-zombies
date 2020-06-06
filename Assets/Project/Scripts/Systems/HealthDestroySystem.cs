@@ -39,6 +39,12 @@ namespace Assets.Project.Scripts.Systems
             var translation = GetComponent<Translation>(entity);
             GameManager.ZombieSfx(new Vector2(translation.Value.x, translation.Value.y));
           }
+
+          if (GameManager.IsGameOver && HasComponent<Player.Player>(entity))
+          {
+            return; // Don't destroy the player now, they've won!
+          }
+
           ecb.AddComponent(entity, new LifetimeData
           {
             Value = health.DestroyTime

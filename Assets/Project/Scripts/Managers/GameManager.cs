@@ -252,8 +252,11 @@ namespace Assets.Project.Scripts.Managers
         timer += 0.1f;
         UpdateTime();
       }
-      // TODO: Win!
-      Win();
+
+      if (timer >= gameLengthInSeconds)
+      {
+        Win();
+      }
     }
 
     private void UpdateTime()

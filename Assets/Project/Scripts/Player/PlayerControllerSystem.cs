@@ -20,6 +20,12 @@ namespace Assets.Project.Scripts.Player
       var inputX = Input.GetAxis("Horizontal");
       var deltaTime = Time.DeltaTime;
 
+      if (GameManager.IsGameOver)
+      {
+        inputY = 0f;
+        inputX = 0f;
+      }
+
       var direction = new float3(inputX, inputY, 0f);
       Entities
         .WithAll<Player>()
@@ -30,6 +36,8 @@ namespace Assets.Project.Scripts.Player
 
           rotation.Value = quaternion.identity;
         }).Schedule();
+
+      if (GameManager.IsGameOver) { return; } // player has won, no more shooting...
 
       inputX = 0f;
       inputY = Input.GetAxisRaw("Vertical_2");
@@ -49,7 +57,6 @@ namespace Assets.Project.Scripts.Player
       else if (inputY < 0f) targetAngle = 270f * Mathf.Deg2Rad;    // down
       else if (inputX > 0f) targetAngle = 0f * Mathf.Deg2Rad;      // left
       else if (inputX < 0f) targetAngle = 180f * Mathf.Deg2Rad;    // right
-
 
       Entities.WithoutBurst().WithStructuralChanges()
           .ForEach((ref Translation position, ref Rotation rotation, ref PlayerData data) =>
