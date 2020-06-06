@@ -24,6 +24,18 @@ namespace Assets.Project.Scripts.Managers
       }
     }
 
+    [UsedImplicitly]
+    private void Start()
+    {
+      Invoke(nameof(PlayZombieSfx), Random.Range(5, 20));
+    }
+
+    private void PlayZombieSfx()
+    {
+      AudioManager.PlayZombieSpawnSfx(Vector3.zero);
+      Invoke(nameof(PlayZombieSfx), Random.Range(5, 20));
+    }
+
     public static void StartGame()
     {
       if (instance == null) return;
