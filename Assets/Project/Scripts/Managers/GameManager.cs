@@ -41,6 +41,10 @@ namespace Assets.Project.Scripts.Managers
     [SerializeField]
     private GameObject gameOverUi;
     [SerializeField]
+    private GameObject winUi;
+    [SerializeField]
+    private TextMeshProUGUI winDestroyedText;
+    [SerializeField]
     private TextMeshProUGUI survivedText;
     [SerializeField]
     private TextMeshProUGUI destroyedText;
@@ -131,30 +135,52 @@ namespace Assets.Project.Scripts.Managers
 
     public static void GameOver()
     {
-      if (instance == null || instance.testing) { return; }
+      if (instance == null || instance.testing || IsGameOver) { return; }
 
       World.DefaultGameObjectInjectionWorld.GetExistingSystem<GameStateSystem>().Enabled = false;
       instance.gameOver = true;
 
-      // TODO: do game over UI, sounds, etc
-
       AudioManager.PlaySfx("Player Death");
       _ = Instantiate(instance.playerDeathPrefab, PlayerPosition, instance.playerDeathPrefab.transform.rotation);
 
-      instance.heartBeat.SetActive(false);
-      instance.fastHeartBeat.SetActive(false);
+      DisableHeartBeat();
 
       instance.gameUi.SetActive(false);
       instance.gameOverUi.SetActive(true);
       instance.survivedText.text = $"Survived {instance.timer:00.0} secs";
       instance.destroyedText.text = $"{Score} destroyed";
 
-      instance.StartCoroutine(instance.DeathCamera());
+      instance.StartCoroutine(instance.PlayerFocusCamera());
 
       Debug.Log("GAME OVER");
     }
 
-    private IEnumerator DeathCamera()
+    private static void DisableHeartBeat()
+    {
+      instance.heartBeat.SetActive(false);
+      instance.fastHeartBeat.SetActive(false);
+    }
+
+    private static void Win()
+    {
+      if (instance == null) { return; }
+
+      World.DefaultGameObjectInjectionWorld.GetExistingSystem<GameStateSystem>().Enabled = false;
+      instance.gameOver = true;
+
+      instance.gameUi.SetActive(false);
+      instance.gameOverUi.SetActive(false);
+      instance.winUi.SetActive(true);
+      instance.winDestroyedText.text = $"{Score} destroyed";
+
+      instance.StartCoroutine(instance.PlayerFocusCamera());
+
+      DisableHeartBeat();
+
+      Debug.Log("You Survived!");
+    }
+
+    private IEnumerator PlayerFocusCamera()
     {
       while (mainCamera.orthographicSize > deathCameraTarget)
       {
@@ -202,6 +228,11 @@ namespace Assets.Project.Scripts.Managers
 #else
       testing = false;
 #endif
+
+      winUi.SetActive(false);
+      gameOverUi.SetActive(false);
+      gameUi.SetActive(true);
+
       timer = 0f;
       level = 0;
       mainCamera = UnityEngine.Camera.main;
@@ -222,6 +253,7 @@ namespace Assets.Project.Scripts.Managers
         UpdateTime();
       }
       // TODO: Win!
+      Win();
     }
 
     private void UpdateTime()
