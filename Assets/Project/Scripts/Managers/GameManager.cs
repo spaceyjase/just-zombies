@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using Assets.Project.Scripts.Player;
 using Assets.Project.Scripts.Systems;
@@ -104,6 +105,7 @@ namespace Assets.Project.Scripts.Managers
     private float zombieSpawnSfxChance = 0.995f;
 
     private static GameManager instance;
+
     private bool gameOver;
     private EntityManager manager;
     private GameObjectConversionSettings settings;
@@ -207,6 +209,7 @@ namespace Assets.Project.Scripts.Managers
     private void Start()
     {
       store = new BlobAssetStore();
+
       manager = World.DefaultGameObjectInjectionWorld.EntityManager;
       settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, store);
       Initialise();
@@ -215,9 +218,12 @@ namespace Assets.Project.Scripts.Managers
     [UsedImplicitly]
     private void OnDestroy()
     {
+      StopAllCoroutines();
+
       if (!gameOver)
       {
-        store.Dispose();
+        Debug.Log("Disposed");
+        store.Dispose();  // Stops editor from crashing
       }
     }
 
@@ -229,12 +235,18 @@ namespace Assets.Project.Scripts.Managers
       testing = false;
 #endif
 
+      gameOver = false;
+
+      StopAllCoroutines();
+
       winUi.SetActive(false);
       gameOverUi.SetActive(false);
       gameUi.SetActive(true);
 
       timer = 0f;
       level = 0;
+      Score = 0;
+
       mainCamera = UnityEngine.Camera.main;
 
       SpawnLevelGeometry();
@@ -406,11 +418,13 @@ namespace Assets.Project.Scripts.Managers
     {
       if (instance == null && !IsGameOver) { return; }
 
-      var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-      var array = entityManager.GetAllEntities();
-      foreach (var entity in array)
+      if (instance != null)
       {
-        entityManager.DestroyEntity(entity);
+        var array = instance.manager.GetAllEntities();
+        foreach (var entity in array)
+        {
+          instance.manager.DestroyEntity(entity);
+        }
       }
 
       SceneManager.LoadScene(0);
