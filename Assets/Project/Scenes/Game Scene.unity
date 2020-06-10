@@ -2177,6 +2177,7 @@ MonoBehaviour:
   scoreAnimator: {fileID: 47448341}
   deathCameraSpeed: 0.2
   deathCameraTarget: 10
+  gameLengthInSeconds: 60
   gameLengthInSeconds: 10
   maxLevels: 6
   musicFadeTimeInSeconds: 2
