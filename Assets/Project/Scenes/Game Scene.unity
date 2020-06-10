@@ -635,7 +635,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 909.563, y: -150}
+  m_AnchoredPosition: {x: 909.5, y: -150}
   m_SizeDelta: {x: 528.425, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &470322050
@@ -2177,10 +2177,12 @@ MonoBehaviour:
   scoreAnimator: {fileID: 47448341}
   deathCameraSpeed: 0.2
   deathCameraTarget: 10
-  gameLengthInSeconds: 60
+  gameLengthInSeconds: 10
   maxLevels: 6
   musicFadeTimeInSeconds: 2
   playerPrefab: {fileID: 1534994850309385710, guid: f14d0bc29d9b0c44a89e309a2078c931,
+    type: 3}
+  playerZombie: {fileID: 4308632167216057863, guid: c3fe1be95aace824db79f4d57340717c,
     type: 3}
   playerDeathPrefab: {fileID: 4973324416380344914, guid: 2ccbf8b3ccff1401c890a5ed9cc3aeee,
     type: 3}
@@ -2285,7 +2287,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 909.5629, y: -50}
+  m_AnchoredPosition: {x: 909.5, y: -50}
   m_SizeDelta: {x: 495.57498, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1566639239

@@ -21,7 +21,6 @@ namespace Assets.Project.Scripts.Utility
     private void LateUpdate()
     {
       if (trackedEntity.Equals(Entity.Null)) { return; }
-      if (GameManager.IsGameOver) { return; }
 
       try
       {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using System.Numerics;
 using Assets.Project.Scripts.Player;
 using Assets.Project.Scripts.Systems;
 using Assets.Project.Scripts.Utility;
@@ -13,6 +14,8 @@ using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Assets.Project.Scripts.Managers
 {
@@ -69,6 +72,8 @@ namespace Assets.Project.Scripts.Managers
     [Header("Player settings")]
     [SerializeField]
     private GameObject playerPrefab = null;
+    [SerializeField]
+    private GameObject playerZombie = null;
     [SerializeField]
     private GameObject playerDeathPrefab = null;
     [SerializeField]
@@ -176,6 +181,8 @@ namespace Assets.Project.Scripts.Managers
       instance.winDestroyedText.text = $"{Score} destroyed";
 
       instance.StartCoroutine(instance.PlayerFocusCamera());
+
+      Instantiate(instance.playerZombie, PlayerPosition + Vector3.back, instance.playerZombie.transform.rotation);
 
       DisableHeartBeat();
 
