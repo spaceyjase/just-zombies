@@ -22,3 +22,4 @@ If you're using a gamepad, left-stick moves while controller buttons (typically 
 * Unity, ECS/DOTS based game.
   * The project also includes free Unity Store assets.
 * Gameplay inspiration from The Binding of Isaac and Thomas Was Alone (read: I am not an artist).
+* Featured in the Two-Minute Horror Game Jam: https://itch.io/jam/two-minute-horror-jam
